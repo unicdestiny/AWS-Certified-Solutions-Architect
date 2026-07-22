@@ -1,0 +1,37 @@
+IAM: Identity Access Management
+users and groups:
+*users can be in 1 or more groups
+*groups can be devide by policies
+policies inheritance: policies can be set by a group so that everyone in the group has the same policies
+Policies structure:
+*version
+*id
+*statement:
+  **sid: identifier for the statement
+  **effect: allow or deny
+  **principal:account/user/roel to which this policy applied to
+  **action: list of actions this policy allows or denies
+  **resource: list of resources to which the action is applied to
+  **condition: when this policy is in effect for
+IAM password policy:
+  *minimum password length
+  *require specific charcter types
+  *allow all iam users to change their own password
+  * require users to change the password
+MFA:
+*means using the combination of multiple factors by example: password+ google authenticator
+*multiple options:
+**virtual MFA device
+** Universal 2nd factor(U2F) security key: physical device where you keep keys on
+** hardware key fob mfa device
+** hardware key fob mfa device for aws govcloud(US)
+
+way users can access aws:
+* aws management console: protected by password+MFA
+* aws cli interface: protected by access keys
+* aws software developer kit(sdk)- code protected by access keys
+
+IAM Roles for services:
+*EC2 instance roles
+*lambda function roles
+*roles for cloudformation
