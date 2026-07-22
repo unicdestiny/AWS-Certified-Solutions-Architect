@@ -1,37 +1,125 @@
-IAM: Identity Access Management
-users and groups:
-*users can be in 1 or more groups
-*groups can be devide by policies
-policies inheritance: policies can be set by a group so that everyone in the group has the same policies
-Policies structure:
-*version
-*id
-*statement:
-  **sid: identifier for the statement
-  **effect: allow or deny
-  **principal:account/user/roel to which this policy applied to
-  **action: list of actions this policy allows or denies
-  **resource: list of resources to which the action is applied to
-  **condition: when this policy is in effect for
-IAM password policy:
-  *minimum password length
-  *require specific charcter types
-  *allow all iam users to change their own password
-  * require users to change the password
-MFA:
-*means using the combination of multiple factors by example: password+ google authenticator
-*multiple options:
-**virtual MFA device
-** Universal 2nd factor(U2F) security key: physical device where you keep keys on
-** hardware key fob mfa device
-** hardware key fob mfa device for aws govcloud(US)
+IAM: Identity and Access Management (IAM)
 
-way users can access aws:
-* aws management console: protected by password+MFA
-* aws cli interface: protected by access keys
-* aws software developer kit(sdk)- code protected by access keys
+Purpose:
 
-IAM Roles for services:
-*EC2 instance roles
-*lambda function roles
-*roles for cloudformation
+* IAM allows you to manage access to AWS accounts and services securely.
+* Controls who can access what resources and what actions they can perform.
+* Global service (not tied to a specific AWS region).
+
+Users and Groups:
+
+* Users represent individual people or applications.
+* Users can belong to zero, one, or multiple groups.
+* Groups contain users only (groups cannot contain other groups).
+* Permissions are usually assigned to groups through policies.
+* Users inherit permissions from groups they belong to.
+
+Policies:
+
+* Policies are JSON documents that define permissions.
+* Policies can be attached to users, groups, or roles.
+
+Policy Structure:
+
+* Version
+* Id (optional)
+* Statement:
+  ** Sid: identifier for the statement
+  ** Effect: Allow or Deny
+  ** Principal: account/user/role/service to which the policy applies (mainly used in resource-based policies and trust policies)
+  ** Action: list of allowed or denied actions
+  ** Resource: AWS resources affected by the policy
+  ** Condition: optional requirements for the policy to apply
+
+Policy Evaluation:
+
+* By default, all requests are denied.
+* An explicit Allow grants access.
+* An explicit Deny overrides any Allow.
+
+IAM Password Policy:
+
+* Minimum password length
+* Require specific character types
+* Allow users to change their own passwords
+* Require password rotation/change
+* Prevent password reuse
+
+Multi-Factor Authentication (MFA):
+
+* Uses multiple authentication factors.
+* Example: password + authenticator application.
+
+MFA Options:
+
+* Virtual MFA device (Google Authenticator, Authy, etc.)
+* Universal 2nd Factor (U2F) security key
+* Hardware key fob MFA device
+* Hardware key fob MFA device for AWS GovCloud (US)
+
+Ways Users Can Access AWS:
+
+* AWS Management Console:
+  ** Username/password
+  ** MFA recommended
+
+* AWS CLI:
+  ** Access Key ID
+  ** Secret Access Key
+
+* AWS SDK:
+  ** Access Key ID
+  ** Secret Access Key
+  ** Used by applications and code
+
+Access Keys:
+
+* Used for programmatic access (CLI and SDK).
+* Each user can have access keys.
+* Access keys should be rotated regularly.
+* Never share access keys.
+
+IAM Roles:
+
+* Roles provide temporary credentials.
+* Roles are preferred over storing access keys.
+* Roles can be assumed by users, AWS services, or external accounts.
+
+Examples:
+
+* EC2 Instance Roles
+* Lambda Execution Roles
+* CloudFormation Roles
+* Cross-Account Roles
+
+IAM Security Tools:
+
+* IAM Credential Report (account level):
+  ** Lists all users and status of their credentials.
+  ** Shows password usage, MFA status, access key age, etc.
+
+* IAM Access Advisor (user/role level):
+  ** Shows service permissions granted.
+  ** Shows when services were last accessed.
+
+IAM Guidelines & Best Practices:
+
+* Do not use the root account for daily work.
+* Enable MFA on the root account.
+* One physical user = one IAM user.
+* Assign users to groups.
+* Assign permissions to groups whenever possible.
+* Follow the principle of least privilege.
+* Create and enforce a strong password policy.
+* Use IAM roles whenever possible.
+* Use access keys only for programmatic access.
+* Audit permissions regularly using IAM Credential Reports and Access Advisor.
+* Rotate credentials regularly.
+* Never share IAM users or access keys.
+
+Root Account:
+
+* Created automatically when the AWS account is created.
+* Has full administrative access.
+* Should only be used for account-level tasks.
+* MFA should always be enabled.
