@@ -1,0 +1,34 @@
+EC2= Elastic compute cloud= infrastructure as a service
+consist out of:
+  *Renting virtual machines
+  *Storing data on virtual drives/EBS
+  *Distributing load across machines/ELB
+  *Scaling the services using an auto-scaling group/ASG
+configuration possibilities:
+  *OS
+  *CPU
+  *RAM
+  *storage space options:
+    *Network attached
+      **EBS
+      **EFS
+    *Hardware
+      *EC2 instance store
+  *Network card: speed of the card, public ip address
+  *Firewall rules: security groups
+  *bootstrap script: runs scripts when the machine starts
+    **used for installing updates, software,... => always in root user
+
+for creating and EC2 instance:
+1) go to ec2
+2) got to instances
+3) launch instances
+4) give it a name(Linux Web Server)
+5) choose which operating system (AWS linux)
+6) create a key pair if you wnat to login via console
+  6.1) give it a name b.e. linux web server key pair
+  6.2) choose RSA for encryption and .pem if you're machine is older than or equal to windows 10 otherwise use .ppk
+  6.3) create a security group for the first one do the default
+  6.4) because this is a web server markdown http traffic
+  6.5) and because it's a web server you want to set user data so that it creates it's the first time when launching it
+
