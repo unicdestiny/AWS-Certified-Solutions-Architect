@@ -69,6 +69,47 @@ General format:
 * **Generation** – Represents the hardware generation.
 * **Size** – Defines the amount of resources allocated within that family.
 
+EC2 instance Types:
+- General purpose
+- Compute optimized: great for tasks that require high performance
+  - batch processing
+  - media transcoding
+  - High performance computing/HPC
+  - Scientifc modeling&machine learning
+  - dedicated gaming servers
+- memory optimized: used for workload that process big data sets in memory
+  - SQL or no SQL databases
+  - web scale cache stores
+  - in-memory databases optimized for BI/Buisiniss intelligence
+  - Applications performing real-time processing of big unstructured data
+- storage optimized: high, sequential read and write access to large data sets on local storages
+  -High frequency online transaction processing/OLTP systems
+  - Relational & NoSQL databases
+  - Cache for in-memory databases
+  - data werehousing applications
+  - distributed file system
+interesting is https://www.ec2instances.info/
+
+security groups:
+- only does allow rules based on:
+  - ports
+  - authorized IP ranges in IPv4 and IPv6
+  - inbound and outbound traffic
+- can be done in different way b.e. IP or security group
+- controls how traffic flows too EC2 instance
+- used for multiple instances
+- locked down to a region/VPC combination
+- inbound is blocked and outbound is allowed by default
+
+ports need to know:
+22=ssh
+21=ftp
+22=sftp don't forgot it just using ssh
+80=http
+443=https
+3389=rdp
+
+
 ## Launching an EC2 Instance
 
 The following steps can be used to deploy a basic Linux web server:
