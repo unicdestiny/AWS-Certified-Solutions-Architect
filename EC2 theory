@@ -100,14 +100,17 @@ security groups:
 - used for multiple instances
 - locked down to a region/VPC combination
 - inbound is blocked and outbound is allowed by default
-
+how it actually looks same for inbound and outbound:
+Security group rule ID type protocol port range source description
+sgr-000000000000000001 SSH  TCP      22         0.0.0.0             
 ports need to know:
-22=ssh
-21=ftp
-22=sftp don't forgot it just using ssh
-80=http
-443=https
-3389=rdp
+22=SSH
+21=FTP
+22=SFTP don't forgot it just using SSH
+80=HTTP
+443=HTTPS
+3389=RDP
+
 
 
 ## Launching an EC2 Instance
