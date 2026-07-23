@@ -1,125 +1,134 @@
-IAM: Identity and Access Management (IAM)
+# AWS Identity and Access Management (IAM)
 
-Purpose:
+AWS Identity and Access Management (IAM) is the service used to control authentication and authorization within an AWS environment. It determines who can access AWS resources and what actions they are allowed to perform. IAM is a global AWS service, meaning its configuration applies across all AWS regions.
 
-* IAM allows you to manage access to AWS accounts and services securely.
-* Controls who can access what resources and what actions they can perform.
-* Global service (not tied to a specific AWS region).
+## Users and Groups
 
-Users and Groups:
+An IAM user represents either a person or an application that requires access to AWS resources. Users can exist independently or be placed into one or more groups.
 
-* Users represent individual people or applications.
-* Users can belong to zero, one, or multiple groups.
-* Groups contain users only (groups cannot contain other groups).
-* Permissions are usually assigned to groups through policies.
-* Users inherit permissions from groups they belong to.
+Groups are used to simplify permission management. Instead of assigning permissions to each individual user, permissions can be attached to a group and automatically inherited by all members. AWS does not allow groups to be nested inside other groups.
 
-Policies:
+## IAM Policies
 
-* Policies are JSON documents that define permissions.
-* Policies can be attached to users, groups, or roles.
+Permissions in IAM are defined through policies. Policies are written in JSON format and describe which actions are allowed or denied on specific AWS resources.
 
-Policy Structure:
+A policy typically contains:
 
-* Version
-* Id (optional)
-* Statement:
-  ** Sid: identifier for the statement
-  ** Effect: Allow or Deny
-  ** Principal: account/user/role/service to which the policy applies (mainly used in resource-based policies and trust policies)
-  ** Action: list of allowed or denied actions
-  ** Resource: AWS resources affected by the policy
-  ** Condition: optional requirements for the policy to apply
+* A version identifier
+* An optional policy ID
+* One or more statements
 
-Policy Evaluation:
+Each statement may include:
 
-* By default, all requests are denied.
-* An explicit Allow grants access.
-* An explicit Deny overrides any Allow.
+* **Sid** – a unique identifier for the statement
+* **Effect** – whether the action is allowed or denied
+* **Principal** – the user, role, account, or service affected by the policy
+* **Action** – the AWS operations covered by the policy
+* **Resource** – the AWS resources the policy applies to
+* **Condition** – optional requirements that must be met before access is granted
 
-IAM Password Policy:
+### Permission Evaluation
+
+AWS follows a default-deny security model:
+
+1. All requests are denied by default.
+2. An explicit Allow grants access.
+3. An explicit Deny always overrides an Allow.
+
+## Password Policies
+
+IAM allows administrators to enforce password requirements for users accessing the AWS Management Console.
+
+Common settings include:
 
 * Minimum password length
-* Require specific character types
-* Allow users to change their own passwords
-* Require password rotation/change
-* Prevent password reuse
+* Required character complexity
+* Password expiration and rotation
+* Password reuse prevention
+* Self-service password changes
 
-Multi-Factor Authentication (MFA):
+Strong password policies reduce the risk of unauthorized access caused by weak credentials.
 
-* Uses multiple authentication factors.
-* Example: password + authenticator application.
+## Multi-Factor Authentication (MFA)
 
-MFA Options:
+MFA adds an additional layer of security by requiring a second authentication factor in addition to a password.
 
-* Virtual MFA device (Google Authenticator, Authy, etc.)
-* Universal 2nd Factor (U2F) security key
-* Hardware key fob MFA device
-* Hardware key fob MFA device for AWS GovCloud (US)
+Common MFA options include:
 
-Ways Users Can Access AWS:
+* Authenticator applications such as Google Authenticator or Authy
+* U2F/FIDO security keys
+* Hardware MFA devices
+* AWS GovCloud-compatible hardware tokens
 
-* AWS Management Console:
-  ** Username/password
-  ** MFA recommended
+Using MFA significantly reduces the risk of account compromise if a password is leaked.
 
-* AWS CLI:
-  ** Access Key ID
-  ** Secret Access Key
+## Accessing AWS
 
-* AWS SDK:
-  ** Access Key ID
-  ** Secret Access Key
-  ** Used by applications and code
+AWS resources can be accessed through several methods.
 
-Access Keys:
+### AWS Management Console
 
-* Used for programmatic access (CLI and SDK).
-* Each user can have access keys.
-* Access keys should be rotated regularly.
-* Never share access keys.
+The web-based interface used by administrators and developers. Authentication is typically performed using a username, password, and MFA.
 
-IAM Roles:
+### AWS Command Line Interface (CLI)
 
-* Roles provide temporary credentials.
-* Roles are preferred over storing access keys.
-* Roles can be assumed by users, AWS services, or external accounts.
+The AWS CLI enables administrators to manage resources through terminal commands. Authentication is performed using an Access Key ID and Secret Access Key.
 
-Examples:
+### AWS Software Development Kits (SDKs)
+
+Applications can interact with AWS services through SDKs. Authentication normally uses the same access key mechanism as the CLI.
+
+## Access Keys
+
+Access keys provide programmatic access to AWS services.
+
+Security recommendations include:
+
+* Rotate keys regularly
+* Avoid embedding keys directly in code
+* Never share keys with other users
+* Remove unused keys immediately
+
+Whenever possible, IAM roles should be used instead of long-term access keys.
+
+## IAM Roles
+
+IAM roles provide temporary credentials that can be assumed when needed. Because credentials are generated dynamically, roles are considered more secure than storing permanent access keys.
+
+Common examples include:
 
 * EC2 Instance Roles
 * Lambda Execution Roles
 * CloudFormation Roles
 * Cross-Account Roles
 
-IAM Security Tools:
+## IAM Security and Auditing Tools
 
-* IAM Credential Report (account level):
-  ** Lists all users and status of their credentials.
-  ** Shows password usage, MFA status, access key age, etc.
+### IAM Credential Report
 
-* IAM Access Advisor (user/role level):
-  ** Shows service permissions granted.
-  ** Shows when services were last accessed.
+The credential report provides an account-wide overview of IAM users and their security settings. Information includes password usage, MFA status, and access key age.
 
-IAM Guidelines & Best Practices:
+### IAM Access Advisor
 
-* Do not use the root account for daily work.
-* Enable MFA on the root account.
-* One physical user = one IAM user.
-* Assign users to groups.
-* Assign permissions to groups whenever possible.
-* Follow the principle of least privilege.
-* Create and enforce a strong password policy.
-* Use IAM roles whenever possible.
-* Use access keys only for programmatic access.
-* Audit permissions regularly using IAM Credential Reports and Access Advisor.
-* Rotate credentials regularly.
-* Never share IAM users or access keys.
+Access Advisor helps identify permissions that may no longer be needed by showing which AWS services a user or role has accessed and when they were last used.
 
-Root Account:
+## IAM Best Practices
 
-* Created automatically when the AWS account is created.
-* Has full administrative access.
-* Should only be used for account-level tasks.
-* MFA should always be enabled.
+To maintain a secure AWS environment:
+
+* Avoid using the root account for everyday administration.
+* Enable MFA on the root account immediately.
+* Create a separate IAM user for each individual.
+* Use groups to manage permissions.
+* Apply the principle of least privilege.
+* Enforce strong password policies.
+* Prefer IAM roles over access keys.
+* Audit permissions and credentials regularly.
+* Rotate credentials on a scheduled basis.
+* Never share accounts or access keys.
+
+## Root Account
+
+The root account is created automatically when an AWS account is first established. It has unrestricted access to all AWS services and resources.
+
+Because of its elevated privileges, the root account should only be used for tasks that specifically require root access. AWS recommends enabling MFA and avoiding routine use of this account.
