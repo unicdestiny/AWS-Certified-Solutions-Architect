@@ -1,34 +1,90 @@
-EC2= Elastic compute cloud= infrastructure as a service
-consist out of:
-  *Renting virtual machines
-  *Storing data on virtual drives/EBS
-  *Distributing load across machines/ELB
-  *Scaling the services using an auto-scaling group/ASG
-configuration possibilities:
-  *OS
-  *CPU
-  *RAM
-  *storage space options:
-    *Network attached
-      **EBS
-      **EFS
-    *Hardware
-      *EC2 instance store
-  *Network card: speed of the card, public ip address
-  *Firewall rules: security groups
-  *bootstrap script: runs scripts when the machine starts
-    **used for installing updates, software,... => always in root user
+# Amazon EC2 Overview
 
-for creating and EC2 instance:
-1) go to ec2
-2) got to instances
-3) launch instances
-4) give it a name(Linux Web Server)
-5) choose which operating system (AWS linux)
-6) create a key pair if you wnat to login via console
-  6.1) give it a name b.e. linux web server key pair
-  6.2) choose RSA for encryption and .pem if you're machine is older than or equal to windows 10 otherwise use .ppk
-  6.3) create a security group for the first one do the default
-  6.4) because this is a web server markdown http traffic
-  6.5) and because it's a web server you want to set user data so that it creates it's the first time when launching it
+Amazon EC2 (Elastic Compute Cloud) is AWS's Infrastructure as a Service (IaaS) offering. It allows users to deploy and manage virtual servers in the cloud without purchasing physical hardware.
 
+## Main EC2 Capabilities
+
+EC2 can be used for:
+
+* Running virtual servers on demand.
+* Storing data through AWS storage services such as EBS volumes.
+* Distributing application traffic across multiple servers with Elastic Load Balancers (ELB).
+* Automatically increasing or decreasing the number of servers using Auto Scaling Groups (ASG).
+
+## EC2 Configuration Options
+
+When creating an EC2 instance, several settings can be customized:
+
+### Operating System
+
+Choose the operating system that will run on the virtual machine, such as Amazon Linux, Ubuntu, or Windows Server.
+
+### Compute Resources
+
+Select the amount of CPU and memory required for the workload.
+
+### Storage
+
+**Network-attached storage**
+
+* Elastic Block Store (EBS)
+* Elastic File System (EFS)
+
+**Instance-attached storage**
+
+* EC2 Instance Store (temporary local storage attached to the host)
+
+### Networking
+
+Configure network performance settings, assign public IP addresses, and determine how the instance communicates with other resources.
+
+### Security
+
+Security Groups act as virtual firewalls that control inbound and outbound traffic to the instance.
+
+### User Data / Bootstrap Scripts
+
+User data scripts can run automatically during the instance's first startup. These scripts are commonly used to:
+
+* Install software packages
+* Apply updates
+* Configure services
+* Prepare the server for its intended role
+
+User data scripts execute with root-level privileges by default.
+
+## EC2 Instance Types
+
+AWS provides multiple instance families optimized for different workloads, including general-purpose, compute-optimized, memory-optimized, and storage-optimized instances.
+
+### Instance Naming Convention
+
+Example: `t3.micro`
+
+General format:
+
+`Family + Generation + Size`
+
+* **Family** – Indicates the instance category or purpose.
+* **Generation** – Represents the hardware generation.
+* **Size** – Defines the amount of resources allocated within that family.
+
+## Launching an EC2 Instance
+
+The following steps can be used to deploy a basic Linux web server:
+
+1. Open the AWS Management Console and navigate to the EC2 service.
+2. Select **Instances** and choose **Launch Instance**.
+3. Enter a meaningful name, such as *Linux Web Server*.
+4. Select the desired Amazon Machine Image (AMI), for example Amazon Linux.
+5. Create or select an existing key pair for secure access.
+
+   * Provide a descriptive name for the key pair.
+   * Choose RSA as the key type.
+   * Download the appropriate key format for your environment.
+6. Configure network settings and create or select a Security Group.
+7. Allow HTTP traffic so users can access the web server through a browser.
+8. Add a user data script if you want the server to automatically install and configure software during its first boot.
+9. Review the configuration and launch the instance.
+
+Using user data allows the web server to be ready immediately after deployment without requiring manual configuration.
