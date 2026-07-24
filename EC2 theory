@@ -1,117 +1,367 @@
-# Amazon EC2 Overview
+# Amazon EC2 (Elastic Compute Cloud)
 
-Amazon EC2 (Elastic Compute Cloud) is AWS's Infrastructure as a Service (IaaS) offering. It allows users to deploy and manage virtual servers in the cloud without purchasing physical hardware.
+Amazon EC2 (Elastic Compute Cloud) is AWS's Infrastructure as a Service (IaaS) offering. It provides resizable virtual servers in the AWS Cloud.
 
-## Main EC2 Capabilities
+EC2 allows organizations to run applications without purchasing and maintaining physical hardware. Users can choose the required compute capacity, operating system, storage, networking configuration, and security settings.
 
-EC2 can be used for:
+---
 
-* Running virtual servers on demand.
-* Storing data through AWS storage services such as EBS volumes.
-* Distributing application traffic across multiple servers with Elastic Load Balancers (ELB).
-* Automatically increasing or decreasing the number of servers using Auto Scaling Groups (ASG).
+# Main EC2 Capabilities
 
-## EC2 Configuration Options
+Amazon EC2 can be used for:
 
-When creating an EC2 instance, several settings can be customized:
+- Running virtual servers in the cloud.
+- Hosting applications and websites.
+- Running backend services.
+- Processing workloads requiring scalable compute capacity.
+- Connecting applications with AWS storage services.
+- Scaling infrastructure automatically using Auto Scaling Groups.
+- Distributing traffic using Elastic Load Balancers.
 
-### Operating System
+---
 
-Choose the operating system that will run on the virtual machine, such as Amazon Linux, Ubuntu, or Windows Server.
+# EC2 Instance Configuration Options
 
-### Compute Resources
+When launching an EC2 instance, several components must be configured.
 
-Select the amount of CPU and memory required for the workload.
+## Amazon Machine Image (AMI)
 
-### Storage
+An AMI is a template used to create EC2 instances.
 
-**Network-attached storage**
+An AMI contains:
 
-* Elastic Block Store (EBS)
-* Elastic File System (EFS)
+- Operating system.
+- Installed software.
+- Application configuration.
+- System settings.
 
-**Instance-attached storage**
+Types of AMIs:
 
-* EC2 Instance Store (temporary local storage attached to the host)
+- AWS provided AMIs.
+- Community AMIs.
+- Custom AMIs created by users.
 
-### Networking
+Custom AMIs allow organizations to deploy identical servers quickly and consistently.
 
-Configure network performance settings, assign public IP addresses, and determine how the instance communicates with other resources.
+---
 
-### Security
+# Operating System
 
-Security Groups act as virtual firewalls that control inbound and outbound traffic to the instance.
+EC2 supports multiple operating systems, including:
 
-### User Data / Bootstrap Scripts
+- Amazon Linux
+- Ubuntu
+- Windows Server
+- Red Hat Enterprise Linux
+- SUSE Linux
 
-User data scripts can run automatically during the instance's first startup. These scripts are commonly used to:
+The selected operating system determines the base environment of the virtual machine.
 
-* Install software packages
-* Apply updates
-* Configure services
-* Prepare the server for its intended role
+---
 
-User data scripts execute with root-level privileges by default.
+# Compute Resources
 
-## EC2 Instance Types
+When launching an EC2 instance, users select the amount of:
 
-AWS provides multiple instance families optimized for different workloads, including general-purpose, compute-optimized, memory-optimized, and storage-optimized instances.
+- Virtual CPU (vCPU)
+- Memory (RAM)
+- Network performance
+- Storage performance
 
-### Instance Naming Convention
+The correct instance type depends on the workload requirements.
 
-Example: `t3.micro`
+---
 
-General format:
+# EC2 Storage Options
 
-`Family + Generation + Size`
+EC2 supports multiple storage options.
 
-* **Family** – Indicates the instance category or purpose.
-* **Generation** – Represents the hardware generation.
-* **Size** – Defines the amount of resources allocated within that family.
+## Elastic Block Store (EBS)
 
-EC2 instance Types:
-- General purpose
-- Compute optimized: great for tasks that require high performance
-  - batch processing
-  - media transcoding
-  - High performance computing/HPC
-  - Scientifc modeling&machine learning
-  - dedicated gaming servers
-- memory optimized: used for workload that process big data sets in memory
-  - SQL or no SQL databases
-  - web scale cache stores
-  - in-memory databases optimized for BI/Buisiniss intelligence
-  - Applications performing real-time processing of big unstructured data
-- storage optimized: high, sequential read and write access to large data sets on local storages
-  -High frequency online transaction processing/OLTP systems
-  - Relational & NoSQL databases
-  - Cache for in-memory databases
-  - data werehousing applications
-  - distributed file system
-interesting is https://www.ec2instances.info/
+Amazon EBS provides persistent block storage for EC2 instances.
 
-security groups:
-- only does allow rules based on:
-  - ports
-  - authorized IP ranges in IPv4 and IPv6
-  - inbound and outbound traffic
-- can be done in different way b.e. IP or security group
-- controls how traffic flows too EC2 instance
-- used for multiple instances
-- locked down to a region/VPC combination
-- inbound is blocked and outbound is allowed by default
-how it actually looks same for inbound and outbound:
-Security group rule ID type protocol port range source description
-sgr-000000000000000001 SSH  TCP      22         0.0.0.0             
-ports need to know:
-22=SSH
-21=FTP
-22=SFTP don't forgot it just using SSH
-80=HTTP
-443=HTTPS
-3389=RDP
+Characteristics:
+
+- Data remains after instance termination (depending on configuration).
+- Can be attached and detached from instances.
+- Commonly used for operating system disks and databases.
+
+Examples:
+
+- Boot volumes.
+- Database storage.
+- Application storage.
+
+---
+
+## EC2 Instance Store
+
+Instance Store provides temporary local storage physically attached to the EC2 host.
+
+Characteristics:
+
+- Very high performance.
+- Data is lost when the instance is stopped or terminated.
+- Useful for temporary workloads.
+
+Examples:
+
+- Cache files.
+- Temporary processing.
+- High-performance workloads.
+
+---
+
+## Elastic File System (EFS)
+
+Amazon EFS provides managed shared file storage.
+
+Characteristics:
+
+- Multiple EC2 instances can access the same files.
+- Automatically scales storage capacity.
+- Uses the NFS protocol.
+
+Common use cases:
+
+- Shared application files.
+- Content management systems.
+- Web servers requiring shared storage.
+
+---
+
+# EC2 Instance Types
+
+AWS provides different instance families optimized for specific workloads.
+
+## General Purpose
+
+Balanced combination of:
+
+- CPU
+- Memory
+- Networking
+
+Use cases:
+
+- Web servers.
+- Development environments.
+- Small databases.
+- General applications.
+
+Examples:
+
+- T family
+- M family
+
+---
+
+## Compute Optimized
+
+Designed for workloads requiring high CPU performance.
+
+Use cases:
+
+- Batch processing.
+- Media transcoding.
+- High Performance Computing (HPC).
+- Scientific modelling.
+- Dedicated gaming servers.
+
+Example:
+
+- C family
+
+---
+
+## Memory Optimized
+
+Designed for workloads requiring large amounts of RAM.
+
+Use cases:
+
+- Large databases.
+- In-memory databases.
+- Data analytics.
+- Real-time processing.
+- Business intelligence applications.
+
+Example:
+
+- R family
+
+---
+
+## Storage Optimized
+
+Designed for workloads requiring high-speed local storage.
+
+Use cases:
+
+- Data warehouses.
+- Distributed file systems.
+- High-frequency OLTP systems.
+- Large-scale data processing.
+
+Example:
+
+- I family
+- D family
+
+---
+
+# EC2 Instance Naming Convention
+
+Example:
+
+`t3.micro`
+
+Family + Generation + Size
+
+Example:
+
+`t` → General purpose family
+
+`3` → Third hardware generation
+
+`micro` → Instance size
+
+The instance size determines available resources.
+
+---
+
+# Networking
+
+EC2 instances operate inside an Amazon VPC.
+
+Networking configuration includes:
+
+- Subnet selection.
+- Private IP address.
+- Public IP address.
+- Elastic IP address.
+- Security groups.
+- Network interfaces.
+
+---
+
+# Elastic IP Address
+
+An Elastic IP is a static public IPv4 address.
+
+Use cases:
+
+- Applications requiring a fixed public IP.
+- Failover scenarios.
+
+AWS recommends avoiding unnecessary Elastic IP addresses because public IPv4 addresses are limited.
+
+---
+
+# Security Groups
+
+Security Groups act as virtual firewalls controlling traffic to and from EC2 instances.
+
+Characteristics:
+
+- Applied at instance level.
+- Stateful firewall.
+- Only allow rules can be created.
+- Supports IPv4 and IPv6.
+- Controls inbound and outbound traffic.
+
+Security groups can filter traffic based on:
+
+- Protocol.
+- Port.
+- Source IP address.
+- Another security group.
+
+---
+
+## Default Security Group Behaviour
+
+Inbound:
+
+- Deny all traffic by default.
+
+Outbound:
+
+- Allow all traffic by default.
+
+---
+
+## Example Security Group Rule
+
+| Rule ID | Type | Protocol | Port | Source |
+|---|---|---|---|---|
+| sgr-000000000001 | SSH | TCP | 22 | 0.0.0.0/0 |
+| sgr-000000000002 | HTTP | TCP | 80 | 0.0.0.0/0 |
+| sgr-000000000003 | HTTPS | TCP | 443 | 0.0.0.0/0 |
+
+---
+
+# Common Ports
+
+| Port | Service |
+|-|-|
+| 21 | FTP |
+| 22 | SSH |
+| 22 | SFTP (uses SSH) |
+| 80 | HTTP |
+| 443 | HTTPS |
+| 3389 | RDP |
+| 3306 | MySQL |
+| 5432 | PostgreSQL |
+| 1433 | Microsoft SQL Server |
+| 6379 | Redis |
+| 27017 | MongoDB |
+
+---
+
+# Security Groups vs Network ACLs
+
+## Security Groups
+
+- Stateful firewall.
+- Applied to EC2 instances.
+- Allow rules only.
+- Return traffic automatically allowed.
+
+## Network ACLs
+
+- Stateless firewall.
+- Applied at subnet level.
+- Supports allow and deny rules.
+- Return traffic must be explicitly allowed.
+
+---
+
+# User Data
+
+User Data allows scripts to run automatically when an EC2 instance starts for the first time.
+
+Common uses:
+
+- Installing software.
+- Applying updates.
+- Configuring applications.
+- Starting services.
+
+User Data scripts run with root privileges by default.
+
+Example:
+
+```bash
+#!/bin/bash
+
+yum update -y
+yum install httpd -y
+systemctl start httpd
+systemctl enable httpd
 
 
+Format:
 
 ## Launching an EC2 Instance
 
