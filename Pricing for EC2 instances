@@ -4,3 +4,14 @@ ec2 spot instance requests
     -the hourly spot price depends on offer and capacity
     - current spot price> your max price you can choose to stop or terminate your instance with a 2 minutes grace period
   -used for batch jobs, data analysis, or workloads
+
+price type| price
+On-demand  $0.10
+Spot instance  0.038-0.039(up to 61% off)
+reserved instance(1 year) 0.062(no upfront) - $0.058 (all upfront)
+reserved instance(3 year) 0.043(no upfront) -0.037(all upfront)
+ec2 savings plan(1 year) - 0.062-0.058
+Reserved convertible instance(1 year) 0.071-0.066
+dedicated host on-demand price
+dedicated host reservation up to 70% off
+capacity reservations on-demand price
