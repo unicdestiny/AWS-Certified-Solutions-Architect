@@ -1,0 +1,10 @@
+cluster: instances into a low-latency group in a single available zone
+  pro's: great network 10 gbps bandwidth between instances with enhanced networking enable
+  con's:if the AZ(availability zone) fails, all instances fails at the same time
+spread: instance across underlying hardware - critical applications
+  pro's: can span accross AZ, reduced risk is simultaneaous failure, on different physical hardware 
+  con's: limited to 7 instances per AZ per placement group
+partitions: spreads instances across many different partitions with an AZ. scales to 100s of EC2 instances per group
+  pro's: scan span accross multiple AZs in the same region, up to 100s of ec2 instances, the instances in the partion do not share racks with the instances in the other partitions
+    a partition failure can affect many EC2 but won't affect other partitions, EC2 instances get acccess to the partition information as metadata
+  use case: HDFS,HBase,Cassandra,Kafka
