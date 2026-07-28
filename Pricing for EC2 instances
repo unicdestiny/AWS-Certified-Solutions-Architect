@@ -19,6 +19,13 @@ terminate spot instance:
   4.2) stop 
   4.3) interupt
 5) launch instances
+spot fleets= set of sport instances + on-demand instances
+spot fleets when you meet the target capacity with price constraints
+spot instances:
+  1) lowestPrice= from the pool with the lowest price
+  2) diversified= distributed accross all pools
+  3) capacityOptimized: pool with the optimal capacity for the number of instances
+  4) priceCapacityOptimized: pools with highest capacity available, then select the pool with the lowest price
 
 
 price type| price
