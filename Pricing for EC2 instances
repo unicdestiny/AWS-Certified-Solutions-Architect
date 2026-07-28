@@ -5,6 +5,22 @@ ec2 spot instance requests
     - current spot price> your max price you can choose to stop or terminate your instance with a 2 minutes grace period
   -used for batch jobs, data analysis, or workloads
 
+terminate spot instance:
+1) create request
+2) spot request
+  2.1) maximum price
+  2.2) desired number of instances
+  2.3) launch specification
+  2.4) request type: one-time & persistence
+  2.5) valid from, valid until
+3) request failed 
+4) for persistence
+  4.1) start
+  4.2) stop 
+  4.3) interupt
+5) launch instances
+
+
 price type| price
 On-demand  $0.10
 Spot instance  0.038-0.039(up to 61% off)
