@@ -335,6 +335,17 @@ Outbound:
 - Supports allow and deny rules.
 - Return traffic must be explicitly allowed.
 
+EC2 instances:
+1) stop: the data on the disk is kept intact
+2) terminate: any EBS volumes also set-up to be destroyed is lost
+3) hibrenate:
+  3.1) in-memory state is preserved
+  3.2) the instance boot is much faster
+  3.3) the RAM state is written to a file in the root EBS volume
+  3.4) the root ebs volume must be encrypted
+  3.5) instance size: not bare metal
+  3.6) not more than 60 days 
+  3.7) on-demand,reserved and spot instances
 ---
 
 # User Data
