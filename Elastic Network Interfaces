@@ -1,0 +1,9 @@
+ENI/Elastic network interfaces:
+represents a virtual network card and are bound to a specific availability zone/AZ. 
+And can move between EC2 instances
+ENI attributes:
+  1) Primary IPv4,
+  2) One elastic IP per private IPv4
+  3) one public IPv4
+  4) one or more security groups
+  5) a MAC address
