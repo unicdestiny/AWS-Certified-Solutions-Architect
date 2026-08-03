@@ -1,0 +1,9 @@
+EBS/Elastic Block Store volume= network drive attached to instances
+only mounted to one instance at a time you can also have a multi-attach feature.
+bound to a specific availability/AZ zone
+has a provisioned capacity and delays because it goes over the network
+delete on termination attribute:
+  1) controls EBS behavior when EC2 is terminated
+    1.1) By default, the root EBS is deleted
+    1.2) other volumes of EBS are not deleted
+  2) controled by AWS console/AWS CLI
