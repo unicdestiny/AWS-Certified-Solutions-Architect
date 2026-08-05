@@ -7,3 +7,41 @@ delete on termination attribute:
     1.1) By default, the root EBS is deleted
     1.2) other volumes of EBS are not deleted
   2) controled by AWS console/AWS CLI
+
+EBS snapshots:
+  1) makes a backup of EBS volume 
+  2) copy snapshots across AZ or Region
+EBS snapshots feature:
+  1) EBS snapshot archive = 75% cheaper but takes 24 to 72 hours for restoring
+  2) recycle bin for EBS: setup rules to retain deleted snapshots, specify retention
+  3) fast snapshot restore/FSR: full initization of snapshot and cost very much 
+
+AMI/Amazon Machine Image= 
+customization of EC2 by adding your own software,configuration,OS,montoring tools,.... 
+Makes it faster to boot and can be copied across regions.
+3 kinds of AMI:
+  1) public AMI: provided by AWS
+  2) Own AMI
+  3) AWS marketplace AMI
+Processes for AMI's:
+  1) start
+  2) stop
+  3) build
+  4) launch
+EC2 instance store:
+  1) used for high-performance hardware disk
+  2) better I/O performance
+  3) if they're stopped you lose their storage/ephemeral
+  4) good for buffer/cache/scratch data/ temp cont
+  5) risk of data loss = hardware fails
+EBS volumes 6 types:
+  1) gp2/gp3: general purpose ssd volume balances price and performance
+    1.1) gp2: linked I/O and throughput
+    1.2) gp3: indepently can set I/O and throughput
+  2) io 1/io2 block exprecess: high performance ssd volume 
+  3) st 1: low cost hdd volume designed for frequently accessed, throughput intensive workloads
+  4) sc 1: lowest cost hdd volume less frequently accessed workloads
+only gp2/gp3 and io 1/io 2 block express used as boot volumes. And volumes are chartarized by size,throughput,IOPS (I/O ops per sec)
+Provisioned IOPS ssd: 
+
+  
