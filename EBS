@@ -43,5 +43,3 @@ EBS volumes 6 types:
   4) sc 1: lowest cost hdd volume less frequently accessed workloads
 only gp2/gp3 and io 1/io 2 block express used as boot volumes. And volumes are chartarized by size,throughput,IOPS (I/O ops per sec)
 Provisioned IOPS ssd: 
-
-  
