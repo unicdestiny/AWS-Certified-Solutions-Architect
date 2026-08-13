@@ -1,62 +1,160 @@
-EBS/Elastic Block Store volume= network drive attached to instances
-only mounted to one instance at a time you can also have a multi-attach feature.
-bound to a specific availability/AZ zone
-has a provisioned capacity and delays because it goes over the network
-delete on termination attribute:
-  1) controls EBS behavior when EC2 is terminated
-    1.1) By default, the root EBS is deleted
-    1.2) other volumes of EBS are not deleted
-  2) controled by AWS console/AWS CLI
+EBS — Elastic Block Store
 
-EBS snapshots:
-  1) makes a backup of EBS volume 
-  2) copy snapshots across AZ or Region
-EBS snapshots feature:
-  1) EBS snapshot archive = 75% cheaper but takes 24 to 72 hours for restoring
-  2) recycle bin for EBS: setup rules to retain deleted snapshots, specify retention
-  3) fast snapshot restore/FSR: full initization of snapshot and cost very much 
+EBS volume = network-attached block storage for EC2
 
-AMI/Amazon Machine Image= 
-customization of EC2 by adding your own software,configuration,OS,montoring tools,.... 
-Makes it faster to boot and can be copied across regions.
-3 kinds of AMI:
-  1) public AMI: provided by AWS
-  2) Own AMI
-  3) AWS marketplace AMI
-Processes for AMI's:
-  1) start
-  2) stop
-  3) build
-  4) launch
-EC2 instance store:
-  1) used for high-performance hardware disk
-  2) better I/O performance
-  3) if they're stopped you lose their storage/ephemeral
-  4) good for buffer/cache/scratch data/ temp cont
-  5) risk of data loss = hardware fails
-EBS volumes 6 types:
-  1) gp2/gp3: general purpose ssd volume balances price and performance
-    1.1) gp2: linked I/O and throughput
-    1.2) gp3: indepently can set I/O and throughput
-  2) io 1/io2 block exprecess: high performance ssd volume 
-  3) st 1: low cost hdd volume designed for frequently accessed, throughput intensive workloads
-  4) sc 1: lowest cost hdd volume less frequently accessed workloads
-only gp2/gp3 and io 1/io 2 block express used as boot volumes. And volumes are chartarized by size,throughput,IOPS (I/O ops per sec)
+Acts like a virtual hard drive attached to an EC2 instance
+Bound to one Availability Zone
+Can normally be attached to one EC2 instance at a time
+EBS Multi-Attach allows certain volumes to be attached to multiple EC2 instances simultaneously
+Has provisioned capacity → you choose the volume size
+Persistent storage → data remains when EC2 is stopped
+Can be used as an EC2 boot/root volume
+Delete on termination
 
-Provisioned IOPS ssd: 
-  1) used for database workloads
-    1.1) io1 = 4gib-16Tib= 64 000 for Nitro EC2 instances & 32 000 for other 
-      1.1.1) can increase PIOPS idenpendently from storage size
-    1.2)io2 block express( 4 GiB- 64 TiB)
-      1.2.1) sub-milisecond latency
-      1.2.2) max piops: 256 000 with an IOPS: GiB ration of 1 000
-      1.2.3) support EBS multi-attach feature
-    1.3) HDD
-      1.3.1) 125 GiB to 16 Tib
-      1.3.2) throughput optimized HDD(St 1)
-        1.3.2.1) big data, data warehouse, log processing
-        1.3.2.2) Max throughput 500 MiB/s - max IOPS 500
-      1.3.3) Cold HDD( sc I)
-        1.3.3.1) for data that is infrequently accessed 
-        1.3.3.2) scenarios where lowest cost is important
-        1.3.3.3) Max througput 250 MiB/s - max IOPS 250
+Controls what happens to an EBS volume when an EC2 instance is terminated:
+
+Root volume → delete by default
+Additional EBS volumes → usually preserved by default
+Can be changed through the AWS Console / CLI
+EBS Snapshots
+
+Snapshot = backup of an EBS volume
+
+Stored in Amazon S3
+Can be used to create new EBS volumes
+Can copy snapshots to another AZ/Region
+Useful for backup, disaster recovery and migration
+Snapshot features
+
+EBS Snapshot Archive
+
+Lower-cost storage for rarely accessed snapshots
+Restoring takes significantly longer
+Use when snapshots don't need to be restored frequently
+
+Recycle Bin
+
+Retains deleted EBS snapshots according to rules
+Protects against accidental deletion
+
+Fast Snapshot Restore (FSR)
+
+Makes a snapshot immediately usable without the normal initialization delay
+Costs extra
+Useful when you need fast access after creating a volume from a snapshot
+AMI — Amazon Machine Image
+
+AMI = template used to launch EC2 instances
+
+Contains things such as:
+
+OS
+Applications/software
+Configuration
+Monitoring tools
+Other required settings
+
+Benefits:
+
+Faster and consistent EC2 deployments
+Can create your own customized EC2 template
+AMIs can be copied between Regions
+Types of AMI
+Public AMI → provided for public use
+Custom AMI → created by you/your organization
+AWS Marketplace AMI → provided by third-party vendors
+Basic process
+
+Create/configure EC2 → create AMI → launch new EC2 instances from AMI
+
+EC2 Instance Store
+
+Instance Store = temporary local storage physically attached to the EC2 host
+
+Very high-performance storage
+Lower latency than network-attached storage
+Ephemeral → data can be lost when the instance is stopped/terminated or the underlying hardware fails
+Good for:
+Cache
+Temporary data
+Scratch space
+Buffers
+
+Don't use it for data that must persist.
+
+EBS Volume Types
+1. General Purpose SSD
+
+gp3 / gp2
+
+General-purpose workloads
+Good balance of price and performance
+gp3 → IOPS and throughput can be configured independently
+gp2 → performance is tied more closely to volume size
+
+Default choice for many EC2 workloads.
+
+2. Provisioned IOPS SSD
+
+io1 / io2
+
+High-performance workloads
+Designed especially for databases and I/O-intensive applications
+IOPS can be provisioned independently from storage capacity
+io2 → higher durability and performance than io1
+
+Think:
+
+Need consistently high IOPS → io1/io2
+
+3. Throughput Optimized HDD
+
+st1
+
+Low-cost HDD
+Designed for frequently accessed, throughput-intensive workloads
+Examples:
+Big data
+Data warehouses
+Log processing
+
+Think:
+
+Need high sequential throughput → st1
+
+4. Cold HDD
+
+sc1
+
+Lowest-cost EBS option
+Designed for infrequently accessed data
+Lower performance than st1
+
+Think:
+
+Infrequently accessed + lowest cost → sc1
+
+The EBS decision tree you actually need
+
+This is much more important than memorizing all the numbers:
+
+Normal EC2 workload
+→ gp3
+
+Need very high/consistent IOPS, e.g. database
+→ io2
+
+Need high sequential throughput
+→ st1
+
+Infrequently accessed data + lowest cost
+→ sc1
+
+Temporary, extremely fast local storage
+→ Instance Store
+
+Backup of EBS
+→ EBS Snapshot
+
+Need to recreate an entire configured EC2 environment
+→ AMI
