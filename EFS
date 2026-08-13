@@ -1,0 +1,14 @@
+managed NFS/Network file system that can be mounted on many EC2
+works with multiple AZ/Availability zones with EC2 instances
+pay per user because high available,scalable and expensive
+use NFSv4.1 protocol
+uses security group for access, compatible with linux base ami, encryption at rest using KMS
+Posix file system that has a standard API, file system scales automatically
+used for content management,web serving data sharing,....
+performance mode:
+  1) General purpose
+  2) Max I/O
+  3) Throughput mode
+    3.1) bursting -1 TB
+    3.2) provisioned 
+    3.3
