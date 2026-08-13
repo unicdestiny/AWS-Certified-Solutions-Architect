@@ -1,0 +1,12 @@
+attach the same EBS volume to multiple EC2
+instance has full read& write permissions to the high-performance volume
+up to 16 EC2 instance at a time
+must be in the same AZ/Availability zone
+file system must be cluster aware
+
+EBS encryption types:
+  1) data at rest
+    1.1) snaphots are encrypted
+    1.2) all volumes created from the snapshot
+  2) data in transit
+uses leverage keys from KMS that uses AES-256
