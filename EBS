@@ -42,4 +42,21 @@ EBS volumes 6 types:
   3) st 1: low cost hdd volume designed for frequently accessed, throughput intensive workloads
   4) sc 1: lowest cost hdd volume less frequently accessed workloads
 only gp2/gp3 and io 1/io 2 block express used as boot volumes. And volumes are chartarized by size,throughput,IOPS (I/O ops per sec)
+
 Provisioned IOPS ssd: 
+  1) used for database workloads
+    1.1) io1 = 4gib-16Tib= 64 000 for Nitro EC2 instances & 32 000 for other 
+      1.1.1) can increase PIOPS idenpendently from storage size
+    1.2)io2 block express( 4 GiB- 64 TiB)
+      1.2.1) sub-milisecond latency
+      1.2.2) max piops: 256 000 with an IOPS: GiB ration of 1 000
+      1.2.3) support EBS multi-attach feature
+    1.3) HDD
+      1.3.1) 125 GiB to 16 Tib
+      1.3.2) throughput optimized HDD(St 1)
+        1.3.2.1) big data, data warehouse, log processing
+        1.3.2.2) Max throughput 500 MiB/s - max IOPS 500
+      1.3.3) Cold HDD( sc I)
+        1.3.3.1) for data that is infrequently accessed 
+        1.3.3.2) scenarios where lowest cost is important
+        1.3.3.3) Max througput 250 MiB/s - max IOPS 250
