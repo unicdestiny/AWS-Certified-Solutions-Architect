@@ -1,0 +1,43 @@
+vertical scalability= increasing the size of the instance. Also means scaling up or down.
+horizontal scalability= increasing the number of instances/ systems for your applications. Used in distributed systems
+high availabilty= Runs the same instances of multiple AZ.
+passive= means not both are working at the same time
+active= means both are defiding the load under them selfs.
+
+load balancing: is forwarding traffic to multiple server downstream. So basically splitsing the load over multiple servers.
+
+elastic load balancer: managed load balacer made by AWS and they also take care of it with the configurations and so on...
+  makes use of health checks: checks if there is a response from the device it's trying to reach. Via sending a message on a port.
+  4 kinds of load balancers:
+    1) classic load balancer/v1/old generation/CLB
+      1.1) not used anymore: uses http,https,tcp,ssl
+    2) application load balancer/v2: supports http,https,websockets
+    3) network load balancer/v2: tcp,tls,udp
+    4) gateway load balancer: operates a layer 3 of the osi model. This is the network layer
+
+application load balancer/ALB
+-----------------------------
+allows for routing tables in different target groups: 
+  1) based on path url example.com/users & example.com/posts
+  2) based on hostname in url: one.example.com&other.example.com
+  3) based on query,string,headers: example.com/users?id=123&order=false
+  4) used for micro service&container-based application
+  5) has a redirect feature on the port 
+target groups:
+  1) EC2 instances
+  2) ECS tasks
+  3) Lambda functions
+  4) IP Addresses
+servers don't see the IP of the client directly: true IP of the client is inserted in the header of X-Forwarded-For, X-Forwarded-Port and proto/ X-Forwarded-Proto
+
+Network load balancer/NLB
+-------------------------------
+  1) only one static IP per AZ
+  2) ultra-low latency
+  3) layer 4 of osi so TCP&UDP traffic
+target groups:
+  1) EC2 instances
+  2) IP addresses= always private IPs
+  3) NLB is always in front of ALB
+  4) health checks only support TCP,HTTP&HTTPS
+  

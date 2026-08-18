@@ -1,5 +1,0 @@
-vertical scalability= increasing the size of the instance. Also means scaling up or down.
-horizontal scalability= increasing the number of instances/ systems for your applications. Used in distributed systems
-high availabilty= Runs the same instances of multiple AZ.
-passive= means not both are working at the same time
-active= means both are defiding the load under them selfs.
