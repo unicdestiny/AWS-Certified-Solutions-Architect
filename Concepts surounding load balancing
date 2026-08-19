@@ -77,6 +77,19 @@ Dynamic scaling → scale based on metrics such as CPU utilization
 Target tracking → e.g. maintain average CPU around 50%
 ASG + Load Balancer → common architecture where the LB distributes traffic and the ASG adds/removes EC2 instances
 cloudwatch alarms= metric by example average CPU that can use scale out or scale in based on the alarms
+difference kind of scaling:
+  1) dynamic
+    1.1) target tracking scaling
+    1.2) simple/step scaling= cloudwatch alarms
+  2) sheduled scaling
+    2.1) anticipate scaling on patterns
+  3) predictive scaling: forecast load and schedule scaling
+metric for scaling:
+  1) cpu utilization
+  2) request count per target
+  3) average network in/out
+  4) any custom metric
+cooling period= not allowed to setup/delete instances
 
 #do all labo's when done with course
 
