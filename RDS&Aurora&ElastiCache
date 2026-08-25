@@ -1,0 +1,16 @@
+RDS= relational database service that uses SQL
+database used by AWS: postgres,mysql,mariadb,oracle,microsoft SQL,IBM DB2,Aurora
+RDS:
+  1) automated
+  2) continious backup and restore
+  3) Multi AZ setup for DR
+  4) scaling vertical and horizontal: used maximum storage threshold which is the limit for DB storage
+  5) storage backed by EBS
+
+RDS read replicas: scale the amount of reads(select statements) you can do on the database. Can do this in the same AZ,Cross AZ and cross region and does this async.
+This works by making a replica of the production db and you it for the reporting application.
+for multi AZ: it automatically fails over to increase availability by using the same dns name. And zero downtime when failing over
+
+RDS custom: used for oracle and microsoft SQL. Access to the underlying database an OS. During doing it de-activate automation mode.
+
+Amazon Aurora:  proprietary technology from AWS, supports PostGres and MySQL, aws cloud optimized, storage automatically grows in increments of 10 GB when it smaller then 256 TB.
