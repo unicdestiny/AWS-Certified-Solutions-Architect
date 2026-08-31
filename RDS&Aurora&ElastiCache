@@ -1,16 +1,1011 @@
-RDS= relational database service that uses SQL
-database used by AWS: postgres,mysql,mariadb,oracle,microsoft SQL,IBM DB2,Aurora
-RDS:
-  1) automated
-  2) continious backup and restore
-  3) Multi AZ setup for DR
-  4) scaling vertical and horizontal: used maximum storage threshold which is the limit for DB storage
-  5) storage backed by EBS
+# AWS RDS, Aurora & ElastiCache — AWS Certified Solutions Architect
 
-RDS read replicas: scale the amount of reads(select statements) you can do on the database. Can do this in the same AZ,Cross AZ and cross region and does this async.
-This works by making a replica of the production db and you it for the reporting application.
-for multi AZ: it automatically fails over to increase availability by using the same dns name. And zero downtime when failing over
+# 1. Amazon RDS
 
-RDS custom: used for oracle and microsoft SQL. Access to the underlying database an OS. During doing it de-activate automation mode.
+**Amazon RDS (Relational Database Service)** = fully managed relational database service. AWS manages the underlying infrastructure, OS patching, backups, and much of the database administration.
 
-Amazon Aurora:  proprietary technology from AWS, supports PostGres and MySQL, aws cloud optimized, storage automatically grows in increments of 10 GB when it smaller then 256 TB.
+### Supported database engines
+
+* PostgreSQL
+* MySQL
+* MariaDB
+* Oracle
+* Microsoft SQL Server
+* IBM Db2
+* Amazon Aurora (MySQL-compatible and PostgreSQL-compatible)
+
+RDS databases use SQL and are used when an application needs a **relational database**.
+
+---
+
+## RDS main features
+
+1. **Managed service**
+
+   * AWS manages the underlying infrastructure.
+   * AWS handles many maintenance and patching tasks.
+   * No need to manage the underlying OS for standard RDS.
+
+2. **Automated backups**
+
+   * Automated daily backups.
+   * Transaction logs are backed up approximately every 5 minutes.
+   * Retention period: **1–35 days**.
+   * Enables **Point-in-Time Recovery (PITR)**.
+
+3. **Manual DB snapshots**
+
+   * Created manually by the user.
+   * Kept until manually deleted.
+   * Can be used to restore a database to the state captured by the snapshot.
+
+4. **Multi-AZ**
+
+   * Used primarily for **High Availability (HA)** and automatic failover.
+   * Synchronous replication to a standby in another Availability Zone.
+   * If the primary fails, RDS automatically fails over to the standby.
+   * The application continues using the same DB endpoint/DNS name.
+   * There is normally a short interruption during failover; it is not literally zero downtime.
+   * The standby is generally **not used for read traffic**.
+
+5. **Read Replicas**
+
+   * Used primarily for **read scaling**.
+   * Replication is **asynchronous**.
+   * Applications can send read traffic to replicas.
+   * Can be created in:
+
+     * Same AZ
+     * Different AZ
+     * Different Region
+   * Common use case: reporting/analytics applications that would otherwise put too much read load on the primary database.
+
+6. **Vertical scaling**
+
+   * Increase/decrease the DB instance size.
+   * Example: move from a smaller instance class to a larger one with more CPU/RAM.
+
+7. **Storage autoscaling**
+
+   * RDS can automatically increase storage when needed.
+   * You configure a **maximum storage threshold**.
+   * RDS can grow the allocated storage up to that limit.
+
+8. **Storage**
+
+   * RDS database storage is backed by **Amazon EBS**.
+   * Different storage types provide different performance/cost characteristics.
+
+---
+
+# 2. RDS Multi-AZ vs Read Replica
+
+This is one of the most important distinctions for the SAA exam.
+
+| Feature            | Multi-AZ                             | Read Replica                   |
+| ------------------ | ------------------------------------ | ------------------------------ |
+| Main purpose       | High Availability / failover         | Read scaling                   |
+| Replication        | **Synchronous**                      | **Asynchronous**               |
+| Automatic failover | **Yes**                              | No                             |
+| Used for reads     | Normally no                          | **Yes**                        |
+| Standby            | Yes                                  | No; replica is readable        |
+| Cross-Region       | Supported in relevant configurations | Supported                      |
+| Typical use        | Production HA                        | Reporting/read-heavy workloads |
+
+### Easy way to remember
+
+**Multi-AZ = "What happens if my database fails?"**
+
+**Read Replica = "What happens if I have too many reads?"**
+
+---
+
+# 3. RDS Read Replicas
+
+A read replica is a copy of the production database that receives changes asynchronously from the primary database.
+
+### Purpose
+
+* Scale read traffic.
+* Reduce load on the primary database.
+* Useful for:
+
+  * Reporting
+  * Analytics
+  * Read-heavy applications
+
+### Replication
+
+* **Asynchronous**
+* There can therefore be replication lag.
+
+### Locations
+
+Read replicas can be created:
+
+* In the same Availability Zone
+* In another Availability Zone
+* In another AWS Region
+
+### Important
+
+A read replica can be **promoted** to become an independent database.
+
+This can be useful for:
+
+* Disaster recovery
+* Migration
+* Creating an independent production database
+
+---
+
+# 4. RDS Custom
+
+**RDS Custom** is designed for applications that require more control over the underlying database environment.
+
+Supported engines include:
+
+* Oracle
+* Microsoft SQL Server
+
+### RDS Custom provides
+
+* Access to the underlying OS.
+* Access to the database environment.
+* Ability to install/configure custom software.
+* More control than standard RDS.
+
+### Important difference
+
+**Standard RDS**
+→ AWS manages the underlying OS.
+
+**RDS Custom**
+→ You can access and customize the underlying OS/database environment.
+
+Automation can be paused when performing custom configuration or maintenance.
+
+---
+
+# 5. RDS Security
+
+### Encryption at rest
+
+* Uses **AWS KMS**.
+* Encrypts database storage.
+* Encryption can also apply to automated backups, snapshots, and read replicas.
+
+### Encryption in transit
+
+* Uses **SSL/TLS**.
+* Protects data travelling between the application and database.
+
+### Authentication
+
+Two common approaches:
+
+**Database authentication**
+
+* Username + password.
+
+**IAM database authentication**
+
+* Uses IAM authentication instead of relying on a database password.
+* Authentication tokens are used.
+
+### Network security
+
+* **Security Groups** control network access to RDS.
+* RDS is normally placed inside a VPC/private subnets.
+
+### Credentials
+
+* **AWS Secrets Manager** can securely store and rotate database credentials.
+
+### OS access
+
+* Standard RDS does **not** provide SSH access to the underlying OS.
+* RDS Custom provides more underlying OS access.
+
+### Audit logs
+
+* Database engine audit/error/general/slow-query logs can be enabled depending on the engine.
+* Logs can be sent to **Amazon CloudWatch Logs** where supported.
+
+---
+
+# 6. RDS Backups
+
+## Automated backups
+
+* Automatically managed by AWS.
+* Daily automated snapshot.
+* Transaction logs backed up approximately every 5 minutes.
+* Retention: **1–35 days**.
+* Supports **Point-in-Time Recovery (PITR)**.
+
+### Point-in-Time Recovery
+
+Allows you to restore the database to a specific point in time within the backup retention period.
+
+Example:
+
+Database becomes corrupted at 14:37.
+
+You can restore the database to a point shortly before the corruption occurred.
+
+---
+
+## Manual DB snapshots
+
+* Created manually by the user.
+* Retained until manually deleted.
+* Used as a specific restore point.
+* Can be copied to another Region.
+
+### Important distinction
+
+**Automated backup**
+→ Point-in-Time Recovery.
+
+**Manual snapshot**
+→ Restore the database to the snapshot's captured state.
+
+---
+
+# 7. RDS Restore
+
+### Restore from snapshot
+
+Restoring an RDS snapshot creates a **new DB instance**.
+
+It does not overwrite the existing database.
+
+### Restore from S3
+
+Certain RDS database engines support importing data from Amazon S3.
+
+This can be useful for:
+
+* Database migration
+* Importing existing data
+
+---
+
+# 8. Amazon Aurora
+
+**Amazon Aurora** is an AWS-managed relational database designed for cloud workloads.
+
+Aurora is compatible with:
+
+* **MySQL**
+* **PostgreSQL**
+
+Aurora has a distributed storage architecture designed for high availability and performance.
+
+### Aurora advantages
+
+* High availability
+* Automatic storage scaling
+* Automatic backups
+* Fast failover
+* Read replicas
+* Cross-Region replication
+* Managed patching
+* Monitoring
+* Encryption
+* Database cloning
+* Point-in-Time Recovery
+* Backtrack for supported Aurora configurations
+
+---
+
+# 9. Aurora Architecture
+
+An Aurora cluster can contain:
+
+* **1 Writer**
+* **Up to 15 Aurora Replicas/Readers**
+
+Aurora storage is distributed across multiple Availability Zones.
+
+The compute instances share the same underlying Aurora storage.
+
+### Writer
+
+The writer handles:
+
+* INSERT
+* UPDATE
+* DELETE
+* Other write operations
+
+### Readers
+
+Aurora Replicas can handle:
+
+* SELECT/read operations
+* Read-heavy workloads
+* Failover
+
+Aurora can automatically promote an Aurora Replica to become the writer if the current writer fails.
+
+---
+
+# 10. Aurora Endpoints
+
+## Writer Endpoint
+
+Points to the current writer instance.
+
+Applications use this endpoint for:
+
+* INSERT
+* UPDATE
+* DELETE
+* Other write operations
+
+If the writer fails, Aurora automatically updates the endpoint to point to the new writer.
+
+---
+
+## Reader Endpoint
+
+Used for read traffic.
+
+It distributes connections across the available Aurora Replicas.
+
+Used for:
+
+* SELECT queries
+* Read-heavy applications
+* Scaling read traffic
+
+---
+
+## Custom Endpoints
+
+Allows you to define a subset of Aurora instances.
+
+Example:
+
+You have:
+
+* Small Aurora instances
+* Large Aurora instances
+
+You can create a custom endpoint that points only to the large instances.
+
+You can then send resource-intensive queries to that endpoint.
+
+---
+
+# 11. Aurora High Availability
+
+Aurora provides high availability through:
+
+* Distributed storage across multiple AZs.
+* Aurora Replicas.
+* Automatic failover.
+* Automatic backups.
+* Multiple database instances.
+
+### Failover
+
+If the writer fails:
+
+**Aurora Replica → becomes new Writer**
+
+The writer endpoint automatically points to the new writer.
+
+This allows applications to continue using the same endpoint.
+
+---
+
+# 12. Aurora Storage
+
+Aurora storage:
+
+* Automatically grows as data increases.
+* Uses distributed AWS-managed storage.
+* Replicates data across multiple Availability Zones.
+* Separates compute from storage.
+
+Unlike traditional RDS, Aurora's storage architecture is specifically designed for Aurora.
+
+---
+
+# 13. Aurora Backups
+
+### Automated backups
+
+* Continuous/incremental backup architecture.
+* Retention: **1–35 days**.
+* Supports **Point-in-Time Recovery**.
+
+### Manual snapshots
+
+* User initiated.
+* Retained until manually deleted.
+* Can be used to restore an Aurora cluster.
+
+---
+
+# 14. Aurora Backtrack
+
+**Aurora Backtrack** allows you to rewind an Aurora database to an earlier point in time without restoring a snapshot.
+
+Example:
+
+A user accidentally deletes important data.
+
+Instead of restoring a snapshot into a new database, Backtrack can rewind the database to before the mistake.
+
+### Important
+
+**Backtrack ≠ Point-in-Time Recovery**
+
+Backtrack:
+→ rewind the existing database to an earlier state.
+
+Point-in-Time Recovery:
+→ restore the database to a specific point in time using backups.
+
+---
+
+# 15. Aurora Database Cloning
+
+Aurora can create a clone of an existing Aurora database.
+
+The clone uses **copy-on-write** technology.
+
+This means the clone can initially share underlying data with the source rather than copying everything immediately.
+
+Useful for:
+
+* Testing
+* Development
+* Staging
+* Running experiments
+* Analytics
+
+Changes made to the clone do not affect the original database.
+
+---
+
+# 16. Aurora Serverless
+
+**Aurora Serverless** automatically manages database capacity.
+
+It can:
+
+* Automatically scale capacity according to workload.
+* Reduce the need to manually provision database capacity.
+* Be useful for workloads with variable or unpredictable traffic.
+
+Useful when:
+
+* Database traffic is unpredictable.
+* Workloads are intermittent.
+* You don't want to continuously manage database capacity.
+
+---
+
+# 17. Aurora Global Database
+
+**Aurora Global Database** is designed for globally distributed applications and cross-Region disaster recovery.
+
+Architecture:
+
+**Primary Region**
+→ Writer
+
+**Secondary Regions**
+→ Aurora read-only databases
+
+### Benefits
+
+* Low-latency global reads.
+* Cross-Region replication.
+* Disaster recovery across Regions.
+* Secondary Regions can serve read traffic.
+
+Replication lag is typically very low, often under one second, but this should not be treated as an absolute guarantee.
+
+---
+
+# 18. Aurora Machine Learning
+
+Aurora can integrate with AWS machine-learning services.
+
+Examples include:
+
+* **Amazon SageMaker**
+* **Amazon Comprehend**
+
+Possible use cases:
+
+* Fraud detection
+* Product recommendations
+* Sentiment analysis
+* Advertising/targeting
+
+The purpose is to allow database applications to make use of ML capabilities.
+
+This is a lower-priority SAA topic compared with Multi-AZ, Read Replicas, backups, security, and Aurora architecture.
+
+---
+
+# 19. Babelfish for Aurora PostgreSQL
+
+**Babelfish for Aurora PostgreSQL** allows applications originally designed for Microsoft SQL Server to work with Aurora PostgreSQL with fewer application changes.
+
+It provides compatibility with SQL Server-style:
+
+* T-SQL
+* SQL Server communication protocols
+
+Useful when:
+
+**SQL Server application → Aurora PostgreSQL migration**
+
+and you want to reduce the amount of application code that must be rewritten.
+
+### AWS migration tools
+
+**AWS SCT (Schema Conversion Tool)**
+→ Helps convert database schemas/code between database engines.
+
+**AWS DMS (Database Migration Service)**
+→ Helps migrate data between databases.
+
+Babelfish, SCT, and DMS are separate technologies that can be used as part of migration strategies.
+
+---
+
+# 20. RDS Proxy
+
+**Amazon RDS Proxy** is a fully managed database proxy.
+
+It sits between the application and RDS/Aurora.
+
+Architecture:
+
+Application
+↓
+RDS Proxy
+↓
+RDS / Aurora
+
+### Main purpose
+
+**Connection pooling and connection reuse.**
+
+Instead of thousands of application connections directly hitting the database:
+
+Many application connections
+↓
+RDS Proxy
+↓
+A smaller number of database connections
+
+### Benefits
+
+* Connection pooling.
+* Reuses database connections.
+* Reduces connection overhead.
+* Reduces database resource usage.
+* Helps applications scale.
+* Useful with serverless applications such as AWS Lambda.
+* Improves database availability during failover.
+* Can reduce failover disruption.
+* Integrates with IAM authentication.
+* Uses AWS Secrets Manager for database credentials.
+
+### Important use case
+
+**Lambda + RDS**
+
+Lambda can create many concurrent connections.
+
+RDS Proxy helps prevent the database from being overwhelmed by too many connections.
+
+---
+
+# 21. Amazon ElastiCache
+
+**Amazon ElastiCache** is a managed in-memory data store/cache.
+
+Main technologies:
+
+* **Redis/Valkey-compatible capabilities depending on AWS offering/configuration**
+* Memcached
+
+Data is stored in memory, making access much faster than querying a database for every request.
+
+### Main purpose
+
+* Reduce database load.
+* Improve application performance.
+* Reduce latency.
+* Handle frequently accessed data.
+
+---
+
+# 22. ElastiCache Cache Hit
+
+A **cache hit** occurs when the requested data is already in the cache.
+
+Application
+↓
+ElastiCache
+↓
+Data found
+↓
+Return data
+
+The application does **not** need to query the database.
+
+---
+
+# 23. ElastiCache Cache Miss
+
+A **cache miss** occurs when the requested data is not in the cache.
+
+Application
+↓
+ElastiCache
+↓
+Data NOT found
+↓
+Database
+↓
+Return data
+↓
+Store data in ElastiCache
+↓
+Return data to application
+
+This is commonly associated with **Lazy Loading / Cache-Aside**.
+
+---
+
+# 24. ElastiCache and Stateless Applications
+
+User sessions can be stored in ElastiCache.
+
+Instead of storing the session only on one application server:
+
+Application Server 1 ─┐
+Application Server 2 ─┼→ ElastiCache
+Application Server 3 ─┘
+
+All application servers can access the same session data.
+
+This allows application servers to remain **stateless** and makes horizontal scaling easier.
+
+---
+
+# 25. Redis / Valkey-style Cache
+
+Redis provides more advanced capabilities than simple key-value caching.
+
+Important features include:
+
+* Rich data structures.
+* Replication.
+* High availability options.
+* Read replicas.
+* Persistence options.
+* Backup and restore.
+* Multi-AZ capabilities depending on configuration.
+* Pub/Sub.
+* Transactions.
+* Sorted sets.
+* Lists.
+* Sets.
+* Hashes.
+
+### Redis persistence
+
+Depending on the configuration, data can be persisted.
+
+**AOF (Append Only File)**
+→ records write operations for persistence/recovery.
+
+### Redis Sorted Sets
+
+Sorted sets provide:
+
+* Unique members.
+* Ordering based on a score.
+
+Example:
+
+Player → Score
+
+Alice → 1000
+Bob → 900
+Charlie → 800
+
+Useful for:
+
+* Leaderboards
+* Rankings
+* Priority-based data
+
+---
+
+# 26. Memcached
+
+Memcached is a simple, high-performance, distributed in-memory cache.
+
+Characteristics:
+
+* Simple key-value storage.
+* Very fast.
+* Multi-node architecture can partition data.
+* No built-in persistence.
+* No built-in replication/HA like Redis.
+* Data can be lost when nodes fail.
+* Generally used when the cache can simply be rebuilt from the source database.
+
+### Important
+
+**Memcached = ephemeral cache**
+
+Do not use Memcached when you require persistent data.
+
+---
+
+# 27. Redis vs Memcached
+
+| Feature                | Redis   | Memcached       |
+| ---------------------- | ------- | --------------- |
+| In-memory              | Yes     | Yes             |
+| Persistence            | **Yes** | **No**          |
+| Replication            | **Yes** | No              |
+| High Availability      | **Yes** | No built-in HA  |
+| Backup/restore         | **Yes** | No              |
+| Rich data structures   | **Yes** | No              |
+| Simple key-value cache | Yes     | **Yes**         |
+| Sorted sets            | **Yes** | No              |
+| Pub/Sub                | **Yes** | No              |
+| Multi-node             | Yes     | **Yes**         |
+| Data loss acceptable   | Depends | **Usually yes** |
+
+### Easy exam rule
+
+**Need advanced features, persistence, replication, or HA → Redis**
+
+**Need a simple, temporary distributed cache → Memcached**
+
+---
+
+# 28. ElastiCache Security
+
+### Redis
+
+Depending on configuration, authentication can include:
+
+* IAM authentication.
+* Redis AUTH/token.
+* TLS encryption in transit.
+
+### Memcached
+
+* SASL-based authentication can be supported.
+* TLS encryption can be supported depending on configuration.
+
+### Network security
+
+* ElastiCache is deployed inside a VPC.
+* Security Groups control network access.
+
+---
+
+# 29. ElastiCache Caching Patterns
+
+## Lazy Loading / Cache-Aside
+
+Only requested data is loaded into the cache.
+
+1. Application requests data.
+2. Check ElastiCache.
+3. If cache hit → return cached data.
+4. If cache miss → query database.
+5. Return data.
+6. Put data into cache.
+
+### Advantage
+
+Only frequently accessed data gets cached.
+
+### Disadvantage
+
+First request is slower because it must query the database.
+
+---
+
+## Write Through
+
+When data is written or updated:
+
+Application
+↓
+Cache
++
+Database
+
+The cache is updated at the same time as the database.
+
+### Advantage
+
+Cache is more likely to contain current data.
+
+### Disadvantage
+
+Can cause unnecessary cache writes for data that is rarely read.
+
+---
+
+## Session Store
+
+Store user sessions in ElastiCache.
+
+Useful when:
+
+* Multiple application servers exist.
+* Users can be routed to any application server.
+* You want application servers to remain stateless.
+
+---
+
+# 30. Important SAA Decision Rules
+
+### "I need high availability for my RDS database."
+
+→ **Multi-AZ**
+
+### "My database has too many SELECT queries."
+
+→ **Read Replicas**
+
+### "I need read replicas in another Region."
+
+→ **Cross-Region Read Replica**
+
+### "My Lambda functions create too many database connections."
+
+→ **RDS Proxy**
+
+### "I need to cache frequently accessed data."
+
+→ **ElastiCache**
+
+### "I need an advanced in-memory data store with persistence/replication."
+
+→ **Redis/Valkey**
+
+### "I need a simple temporary distributed cache."
+
+→ **Memcached**
+
+### "I need to rewind an Aurora database after an accidental change."
+
+→ **Aurora Backtrack** (where supported)
+
+### "I need to restore an RDS database to a specific point in time."
+
+→ **Point-in-Time Recovery**
+
+### "I need to restore an RDS database to the exact state of a saved backup."
+
+→ **DB Snapshot**
+
+### "I need a globally distributed Aurora database."
+
+→ **Aurora Global Database**
+
+### "I need an application originally built for SQL Server to work with Aurora PostgreSQL with fewer changes."
+
+→ **Babelfish for Aurora PostgreSQL**
+
+### "I need access to the underlying OS of an RDS database."
+
+→ **RDS Custom**
+
+### "I need to encrypt RDS data at rest."
+
+→ **AWS KMS**
+
+### "I need to encrypt database traffic in transit."
+
+→ **TLS/SSL**
+
+### "I need to control network access to RDS."
+
+→ **Security Groups**
+
+### "I need to securely store database credentials."
+
+→ **AWS Secrets Manager**
+
+---
+
+# 31. Highest-Priority Concepts to Memorize
+
+**RDS**
+→ Managed relational database.
+
+**Multi-AZ**
+→ High availability + automatic failover + synchronous replication.
+
+**Read Replica**
+→ Read scaling + asynchronous replication.
+
+**RDS Proxy**
+→ Connection pooling + connection reuse.
+
+**Aurora**
+→ AWS cloud-optimized relational database compatible with MySQL/PostgreSQL.
+
+**Aurora Replica**
+→ Read scaling + can be promoted during failover.
+
+**Aurora Reader Endpoint**
+→ Distributes read connections across Aurora Replicas.
+
+**Aurora Writer Endpoint**
+→ Connects to the current writer.
+
+**Aurora Global Database**
+→ Cross-Region reads + disaster recovery.
+
+**Aurora Serverless**
+→ Automatically adjusts database capacity.
+
+**Aurora Backtrack**
+→ Rewind Aurora to an earlier point in time without restoring a snapshot.
+
+**RDS Automated Backup**
+→ Point-in-Time Recovery.
+
+**RDS Snapshot**
+→ Manual restore point.
+
+**ElastiCache**
+→ In-memory caching.
+
+**Cache Hit**
+→ Data found in cache.
+
+**Cache Miss**
+→ Get data from database and populate cache.
+
+**Lazy Loading**
+→ Read from DB on cache miss, then cache it.
+
+**Write Through**
+→ Write/update cache and database together.
+
+**Redis/Valkey**
+→ Advanced in-memory data store with persistence/replication and rich data structures.
+
+**Memcached**
+→ Simple, ephemeral distributed cache.
+
+**KMS**
+→ Encryption at rest.
+
+**TLS**
+→ Encryption in transit.
+
+**Security Groups**
+→ Network access control.
+
+**Secrets Manager**
+→ Store/manage database credentials.
+
+**IAM Authentication**
+→ Authenticate to the database using IAM rather than a traditional database password.
