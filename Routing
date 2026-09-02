@@ -1,5 +1,5 @@
 DNS
--------------------------------------------------------
+-----------------------------------------------------------------------------------
 DNS= converts IP addresses into hostnames
 Top level domain/TLD
 Second level domain/SLD
@@ -7,10 +7,43 @@ Zone File: contains dns records
 DNS records: A,AAA,CNAME,NS,...
 FQDN/Fully Qualified Domain name
 how DNS resolution works:
-1) host checks it local DNS cache: the computer first checks whether it already knows the IP address for the domain
-2) if not cached, it ask the configured DNS resolver: usually this is a DNS server provided by your ISP, router, company, or a public DNS service such as google DNS or cloudflare
-3) the dns resolver asks a root DNS server: if the resolver doesn't already know the answer, it asks a root DNS server. It tells the resolver wher to find the .com TLD nameserver
-4) the resolver ask the TLD nameserver: the .com TLD nameserver knows which authoratative DNS servers are responsible for google.com. It responds with the relevant authoritative nameserver
-5) the resolver asks the authoritative DNS server for google.com: the authoritative server contains the actual dns records for the domain, such as a A record containing an IPv4 address
-6) The IP address is returned to your computer: the DNS resolver gives the IP address back to you host
+  1) host checks it local DNS cache: the computer first checks whether it already knows the IP address for the domain
+  2) if not cached, it ask the configured DNS resolver: usually this is a DNS server provided by your ISP, router, company, or a public DNS service such as google DNS or cloudflare
+  3) the dns resolver asks a root DNS server: if the resolver doesn't already know the answer, it asks a root DNS server. It tells the resolver wher to find the .com TLD nameserver
+  4) the resolver ask the TLD nameserver: the .com TLD nameserver knows which authoratative DNS servers are responsible for google.com. It responds with the relevant authoritative nameserver
+  5) the resolver asks the authoritative DNS server for google.com: the authoritative server contains the actual dns records for the domain, such as a A record containing an IPv4 address
+  6) The IP address is returned to your computer: the DNS resolver gives the IP address back to you host
 
+route 53
+-----------------------------------------------------------------------------------
+route 53: authoritative(customer can update DNS records) DNS, Domain registrar
+records:
+  1) domain/subdomain name
+  2) recordType
+  3) value
+  4) routing policy
+  5) TTL= how long DNS records are cached
+record types:
+  1) A: maps a hostname to IPV4
+  2) AAAA: maps a hostname to IPv6
+  3) CNAME: maps a hostname to another hostname 
+  4) alias: point a hostname to an other hostname( by example test.example.com to testing.example.com)
+  5) NS: Name Servers for the hosted zone
+Hosted zone: container defining how to route traffic to a domain and its subdomains
+2 kinds of hosted zone:
+  1) Public= route traffic to internet
+  2) Private= route traffic within VPCs/private domain names
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
