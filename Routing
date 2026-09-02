@@ -1,0 +1,16 @@
+DNS
+-------------------------------------------------------
+DNS= converts IP addresses into hostnames
+Top level domain/TLD
+Second level domain/SLD
+Zone File: contains dns records
+DNS records: A,AAA,CNAME,NS,...
+FQDN/Fully Qualified Domain name
+how DNS resolution works:
+1) host checks it local DNS cache: the computer first checks whether it already knows the IP address for the domain
+2) if not cached, it ask the configured DNS resolver: usually this is a DNS server provided by your ISP, router, company, or a public DNS service such as google DNS or cloudflare
+3) the dns resolver asks a root DNS server: if the resolver doesn't already know the answer, it asks a root DNS server. It tells the resolver wher to find the .com TLD nameserver
+4) the resolver ask the TLD nameserver: the .com TLD nameserver knows which authoratative DNS servers are responsible for google.com. It responds with the relevant authoritative nameserver
+5) the resolver asks the authoritative DNS server for google.com: the authoritative server contains the actual dns records for the domain, such as a A record containing an IPv4 address
+6) The IP address is returned to your computer: the DNS resolver gives the IP address back to you host
+
