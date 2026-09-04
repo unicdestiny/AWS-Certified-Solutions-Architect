@@ -33,7 +33,14 @@ Hosted zone: container defining how to route traffic to a domain and its subdoma
 2 kinds of hosted zone:
   1) Public= route traffic to internet
   2) Private= route traffic within VPCs/private domain names
-
+route 53 routing policies(it doesn't work the same as a router):
+  1) simple= route traffic to a single resource. When multiple values one random is chosen by the client
+  2) weighted= control the % of the requests that go to each specific resource. traffic=weight for a specific record/sum of all the weights for all records. Weight 0 is stop sending meaning if all records are 0 this is all returned equal.
+  3) latency= redirect to the lowest latency. Traffic between users and AWS regions used for latency measurement.
+  4) geolocation= based on the location of the AWS region
+  5) health checks= via HTTP/HTTPS and TCP and only used for public resources(200=OK, >18% means healthy)
+health check that monitors others is called a calculated health check, uses or,and or not
+VPC via cloudwatch alarm with a metric.
 
 
 
