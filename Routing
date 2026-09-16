@@ -42,6 +42,53 @@ route 53 routing policies(it doesn't work the same as a router):
 health check that monitors others is called a calculated health check, uses or,and or not
 VPC via cloudwatch alarm with a metric.
 
+routing policies -> failover -> active passive -> happens by health check -> when fails it fails over
+
+routing policies -> geolocation:
+                                  -> based on location
+                                  -> uses best location based on latency 
+
+routing policies -> geoproximity:
+                                  -> based on geographic location of users
+                                  -> expand and shrik traffic resource
+                                  -> shift more traffic to resources based on bias(int: the higher the more users will use it)
+
+routing policies -> IP-based routing:
+                                    -> routing based on client IP
+                                    -> provide a list of CIDRs for client
+
+
+routing policies -> Multi-Value:
+                                -> use of multiple resource
+                                -> multiple-value query for max 8 healthy records
+
+Domain registrar:
+  -> any one you want
+  -> provides DNS service for DNS records
+  -> can use a different DNS name service
+route 53 resolver:
+  -> private/public/local domain 
+  -> forward dns queries to dns resolver
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
