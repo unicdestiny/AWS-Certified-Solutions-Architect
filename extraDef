@@ -1,0 +1,13 @@
+Golden AMI: means setup doing before lauching it via an ami so you can automate it quicker
+beanstalk: managed service for automating components(EC2) on AWS
+application: collection of the components 
+environment: 
+  -> collection of aws components
+  -> tiers:
+      -> web server tier
+      -> worker tier
+
+dep modes:
+  -> single instace
+  -> high availabilty wiht load balancer
+  
