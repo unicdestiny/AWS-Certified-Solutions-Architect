@@ -1,33 +1,529 @@
-def: a way to store files using buckets which consist of objects
-use cases:backup/storage,disaster recovery,archive,hybrid cloud storage,application hosting,..
-buckets are directories in the clouds where files are the objects
-shared global namespace: unique global name across all regions
-account regional namespace: use same bucket name across regions
-objects have a key this is the full path: composed of prefix+object name
-multi-part upload for files bigger than 5GB
-tags=unicode key
-meta data= additional information given for the object
+# AWS S3 – Simple Storage Service
 
-security policies:
-  1) user based:IAM
-  2) reource-based:
-    2.1) bucket policies:
-      2.1.1) json based policies: resources, effect(allow/deny), actions( set of api to allow or deny), principale( what should you do with it)
-    2.2) object ACL: based on the file or map
-    2.3)  bucket ACL: based on the full bucket
-  3) encryption using encryption keys
+## 1. What is S3?
 
-versioning: doesn't delete previous version just marks it as delete
+**S3 (Simple Storage Service)** is an AWS **object storage service** used to store and retrieve data.
 
-S3 replication(copying asynchronous,IAM):
-  1)CRR/Cross-region replication
-  2) SRR/Same-region replication
+### Common use cases
 
-Storage classes:
-  1) standard- generale purpose
-  2) standard-infrequent access(IA)
-  3) one zone-infrequent access
-  4) glacier instant retrieval
-  5) glacier flexible retrieval 
-  6) glacier deep archive
-  7) intelligent tiering 
+* Backup and storage
+* Disaster recovery
+* Data archiving
+* Data lakes
+* Application data
+* Static website hosting
+* Hybrid cloud storage
+
+---
+
+# 2. S3 Structure
+
+S3 is organized as:
+
+**AWS Account → Bucket → Object**
+
+### Bucket
+
+A **bucket** is a container where objects are stored.
+
+* A bucket is created in a specific AWS Region.
+* Bucket names must be **globally unique across AWS**.
+* You cannot create two buckets with the same name, even in different Regions.
+* S3 does not use traditional directories/folders internally.
+
+### Object
+
+An **object** is the actual data stored in S3, such as:
+
+* Images
+* Videos
+* Documents
+* Backups
+* Logs
+
+Each object consists of:
+
+* The data itself
+* A **key**
+* Metadata
+* Optional tags
+
+---
+
+# 3. Object Keys
+
+Every object has a **key**, which identifies the object inside a bucket.
+
+Example:
+
+`photos/2026/vacation.jpg`
+
+The key can be thought of as:
+
+**Prefix + object name**
+
+In this example:
+
+* Prefix: `photos/2026/`
+* Object name: `vacation.jpg`
+
+S3 can make these look like folders, but they are actually part of the object's key.
+
+---
+
+# 4. Multipart Upload
+
+**Multipart upload** allows a large object to be uploaded in multiple parts.
+
+Useful because:
+
+* Large files can be uploaded in parallel.
+* Failed parts can be uploaded again without restarting the entire upload.
+* Objects **larger than 5 GB must use multipart upload**.
+
+---
+
+# 5. Object Metadata
+
+**Metadata** = additional information about an object.
+
+Examples:
+
+* Content type
+* Size
+* Creation information
+* Custom metadata
+
+Think:
+
+> **Object = data + information about the data**
+
+---
+
+# 6. Object Tags
+
+**Tags** are key-value pairs attached to objects.
+
+Example:
+
+`Environment = Production`
+
+Another example:
+
+`Department = IT`
+
+Tags can be used for:
+
+* Organization
+* Cost management
+* Lifecycle management
+* Identifying objects
+
+---
+
+# 7. S3 Storage Classes
+
+S3 offers different storage classes depending on how frequently data is accessed.
+
+### 7.1 S3 Standard
+
+For **frequently accessed data**.
+
+* General-purpose storage
+* High availability
+* Immediate access
+* No minimum storage duration
+
+Think:
+
+> **Standard = I use this data regularly.**
+
+---
+
+### 7.2 S3 Standard-IA
+
+**IA = Infrequent Access**
+
+For data that is accessed less frequently but still needs **rapid access**.
+
+* Stored across multiple Availability Zones
+* Immediate access
+* Minimum storage duration: **30 days**
+
+Think:
+
+> **Standard-IA = I don't access it often, but when I do, I need it quickly.**
+
+---
+
+### 7.3 S3 One Zone-IA
+
+For infrequently accessed data that doesn't require multi-AZ storage.
+
+* Stored in **one Availability Zone**
+* Immediate access
+* Minimum storage duration: **30 days**
+* Cheaper than Standard-IA
+* Appropriate for data that can be recreated or is stored elsewhere
+
+Important:
+
+> If the Availability Zone is destroyed, the data stored only there could be lost.
+
+Think:
+
+> **One Zone-IA = cheap + infrequent access + one AZ.**
+
+---
+
+### 7.4 S3 Glacier Instant Retrieval
+
+For archive data that still requires **immediate access**.
+
+* Immediate retrieval
+* Minimum storage duration: **90 days**
+
+Think:
+
+> **Archive + immediate access**
+
+---
+
+### 7.5 S3 Glacier Flexible Retrieval
+
+For archive data where you can wait for retrieval.
+
+Retrieval options:
+
+* **Expedited:** typically 1–5 minutes
+* **Standard:** typically 3–5 hours
+* **Bulk:** typically 5–12 hours
+
+Minimum storage duration:
+
+**90 days**
+
+Think:
+
+> **Archive + minutes/hours to retrieve**
+
+---
+
+### 7.6 S3 Glacier Deep Archive
+
+For **very long-term archival** where data is rarely accessed.
+
+Retrieval:
+
+* **Standard:** typically 12 hours
+* **Bulk:** typically 48 hours
+
+Minimum storage duration:
+
+**180 days**
+
+Think:
+
+> **Cheapest long-term archive + very slow retrieval**
+
+---
+
+# 8. S3 Intelligent-Tiering
+
+**Intelligent-Tiering** automatically moves objects between access tiers depending on how frequently they are accessed.
+
+Useful when:
+
+> **You don't know how frequently your data will be accessed.**
+
+### Access tiers
+
+**Frequent Access**
+
+* Default tier
+* Data is accessed frequently
+
+**Infrequent Access**
+
+* Objects that haven't been accessed for **30 days**
+
+**Archive Instant Access**
+
+* Objects that haven't been accessed for **90 days**
+* Still provides immediate access
+
+There are also optional archive tiers:
+
+**Archive Access**
+
+* Configurable archive period
+
+**Deep Archive Access**
+
+* Configurable deeper archive period
+
+Main idea:
+
+> **Intelligent-Tiering = AWS automatically optimizes the storage tier based on access patterns.**
+
+---
+
+# 9. S3 Security
+
+There are several mechanisms for controlling access to S3.
+
+## 9.1 IAM Policies
+
+**Identity-based policies**
+
+Attached to:
+
+* IAM users
+* IAM groups
+* IAM roles
+
+They define what an identity is allowed or denied to do.
+
+---
+
+## 9.2 Bucket Policies
+
+**Resource-based policies**
+
+A bucket policy is a JSON policy attached to an S3 bucket.
+
+Important elements include:
+
+### Effect
+
+What happens?
+
+* `Allow`
+* `Deny`
+
+### Principal
+
+**Who** does the policy apply to?
+
+### Action
+
+**What operation** can they perform?
+
+Examples:
+
+* Read an object
+* Upload an object
+* Delete an object
+
+### Resource
+
+**Which S3 resource** does the policy apply to?
+
+### Condition
+
+Optional conditions that must be satisfied.
+
+Easy way to remember:
+
+> **Principal = WHO**
+> **Action = WHAT**
+> **Resource = WHICH**
+> **Effect = ALLOW/DENY**
+
+---
+
+## 9.3 S3 ACLs
+
+**ACL = Access Control List**
+
+ACLs can control access at the:
+
+* Bucket level
+* Object level
+
+However, modern S3 generally uses **IAM policies and bucket policies instead of ACLs**. New S3 buckets normally have ACLs disabled by default through **Bucket owner enforced**.
+
+For the exam, understand what ACLs are, but focus more on IAM and bucket policies.
+
+---
+
+# 10. S3 Encryption
+
+S3 supports encryption to protect data.
+
+Common server-side encryption options include:
+
+### SSE-S3
+
+AWS manages the encryption keys.
+
+### SSE-KMS
+
+AWS KMS manages the encryption keys.
+
+### SSE-C
+
+The customer provides the encryption key.
+
+Main idea:
+
+> **Encryption protects the data from being readable without the required key/access.**
+
+---
+
+# 11. S3 Versioning
+
+**Versioning** keeps multiple versions of an object.
+
+Example:
+
+`document.txt → Version 1`
+
+You upload a new version:
+
+`document.txt → Version 2`
+
+Version 1 is still stored.
+
+If you delete the object, S3 normally adds a **delete marker** rather than immediately permanently deleting the previous version.
+
+Therefore:
+
+> **Versioning protects against accidental overwrites and deletions.**
+
+---
+
+# 12. S3 Replication
+
+S3 replication automatically copies objects **asynchronously** between S3 buckets.
+
+Replication requires appropriate IAM permissions.
+
+## 12.1 CRR – Cross-Region Replication
+
+Copies objects between **different AWS Regions**.
+
+Example:
+
+`Europe → US`
+
+Useful for:
+
+* Disaster recovery
+* Compliance requirements
+* Geographic redundancy
+* Providing data closer to users
+
+---
+
+## 12.2 SRR – Same-Region Replication
+
+Copies objects between buckets in the **same AWS Region**.
+
+Example:
+
+`Bucket A (Europe) → Bucket B (Europe)`
+
+Useful for:
+
+* Data replication
+* Log aggregation
+* Separating environments
+* Compliance requirements
+
+---
+
+# 13. Availability vs Durability
+
+These two are easy to confuse.
+
+### Availability
+
+**How accessible is the service/data when you need it?**
+
+Think:
+
+> **Availability = Can I access it?**
+
+---
+
+### Durability
+
+**How likely is it that the data will remain intact and not be lost?**
+
+Think:
+
+> **Durability = Is my data still there?**
+
+### Easy example
+
+A service could temporarily become unavailable:
+
+> ❌ You can't access your file right now.
+
+But the data could still be completely safe:
+
+> ✅ The file has not been lost.
+
+Therefore:
+
+**Availability ≠ Durability**
+
+---
+
+# Quick S3 Exam Cheat Sheet
+
+| Concept                  | Remember                           |
+| ------------------------ | ---------------------------------- |
+| **S3**                   | Object storage                     |
+| **Bucket**               | Container for objects              |
+| **Object**               | Actual stored data                 |
+| **Key**                  | Identifies an object               |
+| **Multipart upload**     | Large files; >5 GB required        |
+| **Metadata**             | Information about an object        |
+| **Tags**                 | Key-value labels                   |
+| **Standard**             | Frequently accessed                |
+| **Standard-IA**          | Infrequent + immediate + multi-AZ  |
+| **One Zone-IA**          | Infrequent + immediate + one AZ    |
+| **Glacier Instant**      | Archive + immediate                |
+| **Glacier Flexible**     | Archive + minutes/hours            |
+| **Glacier Deep Archive** | Long-term archive + hours          |
+| **Intelligent-Tiering**  | Automatically changes storage tier |
+| **IAM policy**           | Identity-based access              |
+| **Bucket policy**        | Resource-based access              |
+| **ACL**                  | Older access-control mechanism     |
+| **Versioning**           | Keeps previous versions            |
+| **CRR**                  | Cross-Region Replication           |
+| **SRR**                  | Same-Region Replication            |
+| **Availability**         | Can I access it?                   |
+| **Durability**           | Is my data still there?            |
+
+### Numbers worth remembering
+
+**30 days**
+→ Standard-IA / One Zone-IA
+
+**90 days**
+→ Glacier Instant Retrieval / Glacier Flexible Retrieval
+
+**180 days**
+→ Glacier Deep Archive
+
+**5 GB**
+→ Objects larger than this require multipart upload
+
+
+| Storage class                     | Main purpose                                   | Retrieval                  | Min. storage duration | Important thing           |
+| --------------------------------- | ---------------------------------------------- | -------------------------- | --------------------: | ------------------------- |
+| **S3 Standard**                   | Frequently accessed data                       | Immediate                  |                  None | General purpose           |
+| **S3 Standard-IA**                | Data accessed less often                       | Immediate                  |           **30 days** | Multi-AZ                  |
+| **S3 One Zone-IA**                | Infrequently accessed, re-creatable data       | Immediate                  |           **30 days** | **One AZ**                |
+| **S3 Glacier Instant Retrieval**  | Archive data that still needs immediate access | Immediate                  |           **90 days** | Archive                   |
+| **S3 Glacier Flexible Retrieval** | Archive, occasional retrieval                  | Minutes → hours            |           **90 days** | 3 retrieval options       |
+| **S3 Glacier Deep Archive**       | Very long-term archive                         | Hours                      |          **180 days** | Cheapest S3 archive class |
+| **S3 Intelligent-Tiering**        | You don't know/ can't predict access pattern   | Immediate for active tiers |                Varies | Automatically moves data  |
+
+
+
+
+
