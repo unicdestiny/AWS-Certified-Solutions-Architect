@@ -19,3 +19,15 @@ security policies:
 
 versioning: doesn't delete previous version just marks it as delete
 
+S3 replication(copying asynchronous,IAM):
+  1)CRR/Cross-region replication
+  2) SRR/Same-region replication
+
+Storage classes:
+  1) standard- generale purpose
+  2) standard-infrequent access(IA)
+  3) one zone-infrequent access
+  4) glacier instant retrieval
+  5) glacier flexible retrieval 
+  6) glacier deep archive
+  7) intelligent tiering 
