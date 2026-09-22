@@ -523,6 +523,15 @@ Therefore:
 | **S3 Glacier Deep Archive**       | Very long-term archive                         | Hours                      |          **180 days** | Cheapest S3 archive class |
 | **S3 Intelligent-Tiering**        | You don't know/ can't predict access pattern   | Immediate for active tiers |                Varies | Automatically moves data  |
 
+express one zone: single AZ, directory bucket, single-digit milisecond latency
+
+
+
+
+
+
+
+
 
 
 
