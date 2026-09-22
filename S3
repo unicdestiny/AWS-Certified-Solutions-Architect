@@ -1,0 +1,21 @@
+def: a way to store files using buckets which consist of objects
+use cases:backup/storage,disaster recovery,archive,hybrid cloud storage,application hosting,..
+buckets are directories in the clouds where files are the objects
+shared global namespace: unique global name across all regions
+account regional namespace: use same bucket name across regions
+objects have a key this is the full path: composed of prefix+object name
+multi-part upload for files bigger than 5GB
+tags=unicode key
+meta data= additional information given for the object
+
+security policies:
+  1) user based:IAM
+  2) reource-based:
+    2.1) bucket policies:
+      2.1.1) json based policies: resources, effect(allow/deny), actions( set of api to allow or deny), principale( what should you do with it)
+    2.2) object ACL: based on the file or map
+    2.3)  bucket ACL: based on the full bucket
+  3) encryption using encryption keys
+
+versioning: doesn't delete previous version just marks it as delete
+
