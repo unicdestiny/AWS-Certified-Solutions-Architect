@@ -525,7 +525,29 @@ Therefore:
 
 express one zone: single AZ, directory bucket, single-digit milisecond latency
 
+lifecycle management:
+  1) transition actions: move one storage class to another storage class
+  2) experation action: delete an object or storage class
 
+basically standard->standard-AI->one zone IA-> glacier instant retrieval-> glacier flexible retrieval-> deep archive
+
+requester pay: payment for all buckets storage and data transfers so the owner only pays the bucket while the requester pays the data transfers
+
+events(only work with IAM permission used by SNS(simple queing service),SQS, Lambda resource policy,amazon event bridge):
+  1) objectCreate:put,post,copy,
+  2) objectRestore
+amazon event bridge connects: advance filtering, multiple destinations and eventbridge capabilities
+
+multi-part upload: more than >5GB, parallelize upload
+s3 transfer acceleration: increase transfer speed by transferring file to an aws edge location which will forward the data to the s3 bucket in the target region
+byte-range fetches: parallize get request for specific bytes. Splits data into bytes in place of pulling it as one. Starts with a header
+batch operation: modify,copy,encrypt,acl,restore,invoke
+athena to query and filter your objects
+storage lens: analyze and optimize storage across entire aws organizations,discover,aggregate the data
+
+metrics of storage lens:summary metrics, cost optimization metrics, data-protection metrics,access-management, perfomarmance,activity,detailed status ...
+
+2 kind of metrics: free or paid
 
 
 
