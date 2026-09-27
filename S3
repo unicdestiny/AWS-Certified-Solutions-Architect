@@ -553,8 +553,34 @@ encryption:
   1) server-side encryption/SSE:
     1.1) SSE-S3 with amazon managed keys: default uses AES-256 and must be set by X-amz-server-side-encryption:"AES256"
     1.2) SSE with KMS keys/SSE-KMS
-    1.3)SSE-C/ SSE with customer-provided keys
-  2) client side encryption
+    1.3)SSE-C/ SSE with customer-provided keys: fully remote encryption using http header
+  2) client side encryption: data is encrypted by clients
+
+object+key->encryption bucket
+always aws:encryption method
+
+DSSE-KMS/dual-layer server-side encryption: used for multi layer encryption
+
+encryption in transit/SSL/TLS
+
+cors: cross-orgin resource sharing. Works by scheme(protocol)+host(domain)+port. Used as a web browser based mechanism.
+example: https://www.example.com
+cors headers: get,put,delete
+both allowed for specific origin or all origin(*)
+
+MFA: used for permanently delete an object version, suspend version on the bucket
+
+access logs: do not set your logging bucket to be the monitored bucket
+
+
+
+
+
+
+
+
+
+
 
 
 
