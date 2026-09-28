@@ -584,8 +584,9 @@ S3 object lock:
     2.4) legal hold: protect the object indefintly, independent from retention period
 each access point has: own dns name
 vpc access points always need an vpc endpoint
-s3 object lambda: 
-
+s3 object lambda: s3 object lamba access point   -> orginal object -> s3 bucket
+                                                 -> redacting lamba function -> supporting s3 access point -> s3 bucket
+                                                 -> encriching lamba function connected to customer loyalty database -> s3 bucket
 
 
 
