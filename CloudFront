@@ -1,0 +1,16 @@
+CDN network/content delivery network: improves read performance, content is cached at the edge. DDOS protections
+
+origins: backend where you can connect to
+
+S3 bucket: distributing files and caching them at edge, uploading files, securing OAC/Orgin access control
+VPC orgin: application hosted  in VPC private subnets
+Custom origin/HTTP: S3 website or any public HTTP backend you want
+
+how it works:
+client -> cloudfront edge location or local cache-> orgin
+
+vpc origins are used to connect alb or ec2
+
+geo restriction:
+  1) allowlist: default denies users to access the content unless you allow them
+  2) blocklist: default allows users to access the content unless your block them 
