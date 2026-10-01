@@ -14,3 +14,15 @@ vpc origins are used to connect alb or ec2
 geo restriction:
   1) allowlist: default denies users to access the content unless you allow them
   2) blocklist: default allows users to access the content unless your block them 
+
+cache invalidations: happens when you change back-end origin. Because update happens only after TTL expired.
+
+unicast IP: one server holds one IP address
+
+anycast IP: all servers hold the same IP address
+
+AWS global accelerator: uses 2 anycast IP addresss. Where the closest edge locations is used by the user.
+only difference between aws global accelerator and cloudfront is that global accelerator loads it's content from the orgin to the edge device that's closest to the user.
+ 
+
+
