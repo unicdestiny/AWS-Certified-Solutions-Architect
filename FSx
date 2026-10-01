@@ -1,0 +1,9 @@
+Helps you launch 3rd party high performance system on AWS as a full managed service.
+for Windows: supports smb protocol& windows NTFS,DFS/distributed file system AD integration,ACLs,user quotas. And can be mounted on linux ec instances
+for lustre: type of distributed file system, for large-scale computing, combination of linux and clust. Used for HPC/ High performance computing and seamless integration with s3.
+scratch file system: temp storage and data not replicated
+persisten file system: long storage, data is replicated withing AZ automatically
+for netApp ontap:move workloads running on ontap or nas to aws, autoscaling, snapshots, point-in-time cloning
+openzfs: managed openzfs file system on aws, move workload running on zfs to aws, point in time instantaneous cloning
+
+
