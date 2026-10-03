@@ -1,0 +1,29 @@
+SQS: queue model
+sns: pub/sub model
+kinesis: real-time streaming model
+
+producer sends message in to sqs queue
+consumers poll message from a queue
+queue: is a list of tasks that need to be done
+SQS: fully managed service this means that the applications are decoupled
+producer -> SDK protocol -> queue -> poll SQS messages -> consumer
+deleteMessageAPI prevents messages from being in the queue by deleting the messages that are pulled
+
+a way to do it in real life:
+
+SQS queue 
+              -> poll for messages 
+              -> EC2 instances
+SQS queue     
+              -> cloudwatch metric for queue length 
+              -> alarm for breach 
+              -> cloudwatch alarm 
+              -> ASG/Auto scaling group which is connected to EC2 instances
+encryption:
+  -> in-flight: https api
+  -> at-rest:kms keys
+  -> client side: encryption/decryption client
+Access control: IAM policies
+message visibility timeout: if message pulled by consumer it becomes invisible to other consumer
+changeMessageVisibility: helps change the time of how long the message is not visible for other cosumers
+
