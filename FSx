@@ -6,4 +6,46 @@ persisten file system: long storage, data is replicated withing AZ automatically
 for netApp ontap:move workloads running on ontap or nas to aws, autoscaling, snapshots, point-in-time cloning
 openzfs: managed openzfs file system on aws, move workload running on zfs to aws, point in time instantaneous cloning
 
+hybrid cloud: on-premises and in cloud combined
 
+storage gateway: bridge between on-premises and cloud data
+
+tape: an event in time which records a certain object.
+
+types of storage gateway:
+
+  1) S3 file gateway: s3 buckets are available using nfs or smb protocol which is send over the internet via https. Data is cached in the file gateway.
+  2) volume gateway: block storage accesed by ISCSI protoco which is send over the internet via HTTPS
+  3) tape gateway: back up data via ISCSI using existing tape-based processes
+
+VTL/virtual tape library: a library of taped files
+
+aws transfer family: a fully-managed service for file transfer into and out of amazon S3
+
+AWS for ftp
+AWS for FTPS (FTP over SSL)
+AWS for SFTP( secure file tranfer protocol)
+
+datasync: synchronise data on different ways. On-premises via agent and AWS to AWS without an agent. Will keep the metadata from your file as long as transfer is not fully done. 
+
+on-premises: nfs or smb server-> aws datasync agent->tls->aws datasync->aws bucket
+
+1. Amazon S3: Object storage for files, backups, data lakes, static website assets and application data.
+2. Amazon EBS: Block storage for EC2 instances, operating system disks, databases and applications requiring persistent storage.
+3. Amazon EFS: Elastic, shared file storage for Linux workloads that need concurrent access from multiple EC2 instances.
+4. Amazon FSx: Managed file systems for Windows, Lustre, NetApp ONTAP and OpenZFS workloads.
+5. Amazon S3 Glacier: Long-term archival storage for backups, compliance records and data that is rarely accessed.
+6. EC2 Instance Store: Temporary, high-performance local storage for caches, scratch data and workloads that can tolerate data loss.
+7. AWS Backup: Centralized backup management for AWS resources, including backup policies, retention and cross-account or cross-Region copies.
+8. AWS Storage Gateway: Hybrid cloud storage connecting on-premises applications and storage systems with AWS.
+9. AWS DataSync: Automated data transfer between on-premises storage, AWS storage services and supported cloud locations.
+10. AWS Snow Family: Physical devices for transferring large datasets to or from AWS when network transfer is impractical.
+11. AWS Transfer Family: Managed file transfers using SFTP, FTPS, FTP and AS2, with storage commonly backed by Amazon S3 or Amazon EFS.
+12. AWS Elastic Disaster Recovery: Continuous replication and recovery of servers to AWS for disaster recovery.
+13. Amazon FSx File Gateway: On-premises access with local caching for Amazon FSx for Windows File Server.
+14. Amazon S3 on Outposts: S3 object storage on AWS Outposts for workloads requiring data storage close to on-premises applications.
+15. Amazon File Cache: High-speed file caching for data stored across file systems and object storage, especially for compute-intensive workloads.
+16. Amazon S3 Tables: Managed Apache Iceberg table storage in S3 for analytics workloads.
+17. Amazon S3 Vectors: Vector storage and querying for AI and machine learning applications.
+18. AWS Data Exchange: Service for discovering, subscribing to and using third-party datasets.
+19. AWS Marketplace Data Products: Discovering and acquiring third-party datasets and data solutions for analytics and applications.
