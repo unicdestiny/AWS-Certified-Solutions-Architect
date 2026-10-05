@@ -42,3 +42,11 @@ data ordering done via partition ID
 provisioned mode: choose number of shards( the size of the stream)
 on-demand mode: default capacity provisioned, scales automatically base on throughput
 amazon data firehose: A fully managed service that collects incoming streaming data, buffers it, and automatically delivers it in batches to destinations such as S3, Redshift, OpenSearch, or Splunk. It provides near real-time data delivery without requiring you to manage servers.
+
+difference between SQS|SNS|Kinesis:
+SQS: pull data
+SNS: push data to many subscribers
+Kinesis: does both pull and push data based via shard level.
+MQ: managed message broker service for rabbitMQ and activeMQ. Works via an active and standy zone via en amazon EFS. Which can connect to multiple zones. 
+
+
