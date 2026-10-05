@@ -27,3 +27,18 @@ Access control: IAM policies
 message visibility timeout: if message pulled by consumer it becomes invisible to other consumer
 changeMessageVisibility: helps change the time of how long the message is not visible for other cosumers
 
+FIFO/First In First Out: ordering of messages in the queue
+enqueue message: transfering messages as a application into sqs message
+SNS+SQS: fan out
+
+push once in sns, receive in all sqs queus that are subscribers. Access policy that allows for SNS to write to SQS
+Kinesis data streams
+----------------------
+kinesis data streams: collect and store streaming data in real-time
+real-time data-> producers->kinesis data streams->consumers(application,lambda,data firehose)
+KPL/kinesis producer library: to write an optimized producer application
+KCL/Kinesis client library: to write an optimized consumer application
+data ordering done via partition ID
+provisioned mode: choose number of shards( the size of the stream)
+on-demand mode: default capacity provisioned, scales automatically base on throughput
+amazon data firehose: A fully managed service that collects incoming streaming data, buffers it, and automatically delivers it in batches to destinations such as S3, Redshift, OpenSearch, or Splunk. It provides near real-time data delivery without requiring you to manage servers.
