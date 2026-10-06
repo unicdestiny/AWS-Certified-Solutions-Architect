@@ -24,3 +24,26 @@ scheduled scaling: scale base on data/time
 Auto scaling for group: based on CPU utilization, add EC2 instance over time
 ECS cluster capacity provider: automatically provisioning of infrastructure for your ECS tasks. Capacity provider paired with an auto scaling group.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
