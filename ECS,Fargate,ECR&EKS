@@ -1,0 +1,26 @@
+docker= is a platform that allows you to run containers. Which are OS specific software that you can run.
+ECR/Elastic Container Registry: store container images
+infrastructure->host OS-> Docker deamon-> container
+EKS/Elastic kubernetes service
+AWS fargate: own serveless contain platform
+ECS/Elastic container service
+ECS/Elastic container service
+-------------------------------
+launch ECS tasks on ECS cluster= docker container on AWS
+ECS cluster-> EC2 instance-> ECS Agent-> ECS task-> docker container
+Fargate launch type: no provisioning of the infrastructure. Increase number of tasks if you want to create more containers
+ECSTask Role: allow each task to have a specific role so you can use different roles for each ECS service.
+for load balancing: users->application load balancer-> cluster -> ec2 instances with ECS task inside
+for EFS: EFS mounts on ECS cluster which has the EC2 instance/Fargate where the containers are inside.
+
+ECS service auto scaling via AWS application auto scaling 
+      -> ECS service average CPU utilization
+      -> ECS service average memory usage
+      -> ALB request count per target
+
+Target tracking: scaling based on target value from a specific cloudwatch metric
+step scaling: based on cloudwatch alarm
+scheduled scaling: scale base on data/time
+Auto scaling for group: based on CPU utilization, add EC2 instance over time
+ECS cluster capacity provider: automatically provisioning of infrastructure for your ECS tasks. Capacity provider paired with an auto scaling group.
+
