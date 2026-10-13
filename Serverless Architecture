@@ -1,0 +1,25 @@
+servers are not managed anymore. 
+aws lambda:
+-------------------------------------------------------------------------------------------
+virtual functions, limited by time/short executions, run on-demand, scaling automated
+increase ram will improve network
+ECS/fargate is better then lambda for the exam
+
+limits:
+Execution:
+-> memory allocation: 128MB-10GB
+-> max exution time: 900 seconds/15 min
+-> environment variables=4 KB
+-> disk capacity: 512 MB to 10 GB
+-> concurrency execution:100
+Deployement:
+-> Deployement size: 50 MB
+->  size uncompressed: 250 MB
+->  Can use the /tmp directory to load other files
+->  Size of environment variables: 4 KB
+
+reserved concurrency: maximum total of executions
+Throttle: invocation over the concurrency limit
+asynchronous= throttling errors 492, run the function again up to 6 hours, 
+cold start: new code is loaded and code runs outside the handler.
+provisioned concurrency: allocated before the function is invoked
