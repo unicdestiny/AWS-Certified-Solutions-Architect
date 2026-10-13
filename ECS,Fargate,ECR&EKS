@@ -24,9 +24,17 @@ scheduled scaling: scale base on data/time
 Auto scaling for group: based on CPU utilization, add EC2 instance over time
 ECS cluster capacity provider: automatically provisioning of infrastructure for your ECS tasks. Capacity provider paired with an auto scaling group.
 
+ECR= elastic container registry. Used to store and manage docker images
 
+EKS= Elastic kubernets service. Launch and manage kubernetes cluster. 
+Kubernetes is an open-source system for automatic deployment, scaling and management of containerized applications.
 
+EKS worker nodes-> EKS node-> EKS pods
+managed node groups: create and manage node
+self managed node: create yourself and manage by yourself
+aws fargate: no management or creating
 
+Container storage interface= CSI
 
 
 
