@@ -23,3 +23,54 @@ Throttle: invocation over the concurrency limit
 asynchronous= throttling errors 492, run the function again up to 6 hours, 
 cold start: new code is loaded and code runs outside the handler.
 provisioned concurrency: allocated before the function is invoked
+
+lambda without snapstart:
+  1) Initialize  
+  2) Invoke
+  3) Shutdown
+lambda snapstart: 
+  2) Invoke
+  3) Shutdown
+
+edge function: a code that is written and attached to cloudfront distribution. To minimize latency.
+two types: cloudfront functions&lambda@edge
+SEO/Search engine optimization
+cloudfront functions:
+  1) written in javascript
+  2) CDN customizations
+  3) milions of requests/second
+  4) change viewer
+    4.1) viewer request
+    4.2) viewer response
+lambda@edge:
+  1) written in nodejs or python
+  2)response:
+    2.1) viewer request: after cloudfront receives a request from a viewer
+    2.2) origin request: before cloudfront forwards the request to the origin
+    2.3) origin response: after cloudfront receives the response from the origin
+    2.4) viewer response: before cloudfront forwards the response to the viewer
+cloudfront is used for: cache key normalization, header manipulation, url rewrites or redirects, request authentication&authorization
+lambda@edge:adjustable cpu or memory, code depends on a 3rd libraries, network access to use external services for processing, file system access or access to the body of http requests
+ENI/Elastic network interface
+dynamoDB: fully managed highly available with replication across multiple AZs. Doesn't use SQL. Single-digit milisecond and everything is integrated with IAM. 
+Standard & Infrequent access/IA table class
+dynamoDB:
+1) tables with primary key
+2) rows
+3) each item has an attribute
+4) data types supported are: scalar types(string,number,binary,...), document types(list,map), set types(string set,...)
+provisioned mode: default saying how much read and write you expect. 
+on-demand mode: automatically scales read and write
+RCU/ read capacity units: how many times you can read
+WCU/Write capacity units: how many times you can write
+DyncamoDB Accelerator/DAX: fully-managed,highly available, resolves read congestion by caching
+stream processing: orderd stream of item-level in a table
+TTL/Time to live: automatically delete items after an expiry timestamp
+PITR/Point-in-time recovery: creates a point in time recovery object. 
+on-demand backups: full backups for long-term retention
+
+
+
+
+
+
