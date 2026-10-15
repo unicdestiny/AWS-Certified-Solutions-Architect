@@ -69,6 +69,28 @@ TTL/Time to live: automatically delete items after an expiry timestamp
 PITR/Point-in-time recovery: creates a point in time recovery object. 
 on-demand backups: full backups for long-term retention
 
+API gateway
+---------------------------------------------------------------------
+this is a gateway between the customer and your aws services.
+AWS API gateway: integration with lambda function, http,aws service
+
+client -> api gateway -> ...
+
+endpoint types:
+1) edge-optimized/default
+2) regional 
+3) private: only used from your vpc
+
+user authentication:
+1) IAM roles
+2) cognito: for IOT devices
+3) custom authorizer
+you can also do a Custom domain name for HTTPS
+
+
+
+
+
 
 
 
