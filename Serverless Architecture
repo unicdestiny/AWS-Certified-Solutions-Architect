@@ -86,6 +86,11 @@ user authentication:
 2) cognito: for IOT devices
 3) custom authorizer
 you can also do a Custom domain name for HTTPS
+step functions:
+features: sequence, parallel, conditions, timeouts, error handling,...
+cognito:  users an identity to interact with our web or mobile application
+cognito user pools: sign in for every app user
+cognito identity pools/federated identity: provides temp aws credentials so they can access aws resources directly
 
 
 
