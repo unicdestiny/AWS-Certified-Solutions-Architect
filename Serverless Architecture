@@ -91,6 +91,8 @@ features: sequence, parallel, conditions, timeouts, error handling,...
 cognito:  users an identity to interact with our web or mobile application
 cognito user pools: sign in for every app user
 cognito identity pools/federated identity: provides temp aws credentials so they can access aws resources directly
+cognito IAM: a lot of user
+CUP/Cognito user pools: create a serverless database of user for your web&mobile apps
 
 
 
