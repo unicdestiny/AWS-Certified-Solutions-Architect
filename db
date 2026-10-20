@@ -1,0 +1,78 @@
+Amazon RDS:
+- Managed relational database (SQL).
+- Multi-AZ = high availability and automatic failover.
+- Read replicas = scale read traffic.
+- Automated backups and point-in-time recovery.
+- Security: IAM authentication, Secrets Manager, security groups, KMS encryption.
+
+Amazon Aurora:
+- AWS-optimised relational database (MySQL/PostgreSQL compatible).
+- High availability and automatic failover.
+- Automatic storage scaling.
+- Reader and writer endpoints.
+- Global Database = cross-region replication.
+- Serverless = automatic capacity scaling.
+- Machine learning integration.
+- Database cloning.
+
+ElastiCache:
+- Managed in-memory caching (Redis OSS/Valkey or Memcached, depending on offering).
+- Improves application performance and reduces database load.
+- Redis OSS/Valkey = advanced data structures, replication and persistence options.
+- Memcached = simple distributed caching.
+- Use caching for frequently accessed data.
+
+DynamoDB:
+- Fully managed NoSQL key-value/document database.
+- Serverless scaling and single-digit millisecond performance; microsecond latency with DAX for cached reads.
+- On-demand or provisioned capacity.
+- Global Tables = multi-region, multi-active replication.
+- DynamoDB Streams = capture item-level changes.
+- TTL = automatically expire items.
+- DAX = in-memory read cache.
+- Backups and point-in-time recovery.
+- Security: IAM and encryption at rest.
+
+  Amazon S3:
+- Object storage for files, images, videos, backups and data lakes (not a traditional database).
+- Buckets contain objects; each object has a key.
+- Storage classes: Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant Retrieval, Glacier Flexible Retrieval, Deep Archive.
+- Versioning = recover previous object versions.
+- Lifecycle policies = automatically transition or expire objects.
+- Replication = copy objects across buckets/regions (CRR/SRR).
+- Encryption: SSE-S3, SSE-KMS, SSE-C.
+- Security: IAM policies, bucket policies, Block Public Access.
+- Presigned URLs = temporary access to objects.
+- Transfer Acceleration = faster long-distance uploads.
+- S3 Object Lock = WORM protection against deletion/modification.
+- S3 Select = retrieve subsets of data from supported objects.
+- Event Notifications = trigger Lambda, SQS or SNS.
+- Strong read-after-write consistency.
+
+## Amazon Neptune
+- Fully managed graph database for highly connected data (e.g. social networks, fraud detection, recommendations).
+- Graph models: represent data as nodes and relationships (edges).
+- Query languages: Gremlin and openCypher for property graphs; SPARQL for RDF graphs.
+- Neptune Streams = capture changes to graph data via an HTTP REST API.
+- High availability through replication across multiple Availability Zones.
+- Exam tip: Use Neptune when relationships between data points are central to the application.
+
+## Amazon Keyspaces (for Apache Cassandra)
+- Fully managed, serverless, Apache Cassandra-compatible wide-column NoSQL database.
+- Supports Cassandra Query Language (CQL).
+- Automatically scales storage; supports on-demand and provisioned capacity modes.
+- Data is replicated across multiple Availability Zones for high availability.
+- Encryption at rest and in transit.
+- Exam tip: Use Keyspaces when you need Cassandra compatibility without managing database servers.
+
+## Amazon Timestream
+- Fully managed time-series database for time-stamped data (e.g. IoT, application metrics, sensor data).
+- Automatically scales to handle large volumes of time-series data.
+- Purpose-built for fast time-based queries and time-series analytics.
+- Memory Store = recent data for fast access.
+- Magnetic Store = older data for cost-effective storage.
+- Scheduled queries = prepare and aggregate data for faster analysis.
+- Encryption at rest and in transit.
+- Exam tip: Use Timestream for time-stamped measurements and events that must be queried over time.
+  
+  
