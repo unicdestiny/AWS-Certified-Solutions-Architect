@@ -80,3 +80,13 @@ Amazon Managed Service for Apache Flink:
 - Sources can include Amazon Kinesis Data Streams and Amazon MSK.
 - Amazon Data Firehose is not a direct Flink data source; use a supported source such as Kinesis Data Streams when integrating streaming data with Flink.
 - Exam tip: Use Managed Service for Apache Flink for custom real-time stream processing and analytics.
+
+Amazon MSK (Managed Streaming for Apache Kafka):
+- Fully managed service for running Apache Kafka to collect, process and stream real-time data.
+- Kafka brokers = receive, store and distribute streaming messages.
+- Provisioned = choose broker capacity and manage cluster sizing.
+- Serverless = automatically manages capacity and scales based on demand.
+- Amazon MSK manages the Kafka infrastructure, reducing operational overhead.
+- Exam tip: Use MSK when applications need Apache Kafka-compatible event streaming. Unlike Amazon Data Firehose, Kafka supports durable event streams that consumers can read and process independently.
+
+
