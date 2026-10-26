@@ -1,0 +1,82 @@
+Amazon Athena:
+- Serverless interactive query service to analyze data stored in Amazon S3 using standard SQL.
+- Columnar data formats (Parquet/ORC) = scan only the columns needed, reducing query cost and improving performance.
+- Federated Query = run SQL queries across data in relational, non-relational, object and custom data sources.
+- Exam tip: Use Athena to query data directly in S3 without managing database infrastructure.
+
+OLTP (Online Transaction Processing):
+- Optimized for frequent, fast transactions (INSERT, UPDATE, DELETE).
+- Used by transactional applications such as banking, shopping and order processing.
+- Exam tip: Use OLTP for day-to-day application transactions.
+
+OLAP (Online Analytical Processing):
+- Optimized for complex queries and analysis across large datasets.
+- Used for reporting, dashboards and business intelligence.
+- Exam tip: Use OLAP for analytics and decision-making.
+
+Amazon Redshift:
+- Fully managed, PostgreSQL-compatible cloud data warehouse for large-scale analytics (OLAP).
+- Columnar storage = efficient analytical queries over large datasets.
+- Provisioned = choose and manage cluster capacity.
+- Serverless = automatically manages compute capacity.
+- Exam tip: Use Redshift for analytics across large datasets, not typical transactional workloads.
+
+Redshift Cluster:
+- Leader node = receives queries, creates query plans and aggregates results.
+- Compute nodes = execute query operations and return results to the leader node.
+
+Amazon Redshift Spectrum:
+- Queries data directly in Amazon S3 without loading it into Redshift tables.
+- Leader node = coordinates query planning and execution.
+- Compute resources = process queries against external data in S3.
+- AWS Glue Data Catalog = stores metadata about external tables.
+- Exam tip: Use Spectrum to analyze data in S3 alongside data in Redshift without moving the S3 data into the cluster.
+
+HDFS (Hadoop Distributed File System):
+- Distributed file system that stores very large files across multiple machines in a Hadoop cluster.
+- Data is split into blocks and distributed across multiple DataNodes.
+- NameNode = manages filesystem metadata, including file names and which DataNodes store each block.
+- DataNodes = store the actual data blocks.
+- Replication = stores copies of blocks on multiple DataNodes for fault tolerance.
+- In Amazon EMR, core nodes store HDFS data, while task nodes provide additional processing capacity without storing HDFS data by default.
+- Exam tip: HDFS provides distributed storage for big data processing; it is not the same as Amazon S3, which provides object storage.
+  
+Amazon EMR (Elastic MapReduce):
+- Managed big data platform to process and analyze large datasets using frameworks such as Apache Hadoop and Spark.
+- Master node = manages the cluster and coordinates tasks.
+- Core nodes = process tasks and store data in HDFS.
+- Task nodes = provide additional processing capacity without storing data in HDFS.
+- Exam tip: Use EMR for big data processing with frameworks such as Hadoop and Spark.
+
+Amazon QuickSight:
+- Serverless business intelligence (BI) service to create interactive dashboards and visualizations.
+- SPICE = in-memory engine that accelerates analytical queries.
+- Column-Level Security (CLS) = restrict access to specific columns.
+- Row-Level Security (RLS) = restrict access to specific rows.
+- Exam tip: Use QuickSight to visualize and analyze data through dashboards.
+
+AWS Glue:
+- Serverless data integration service for extracting, transforming and loading data (ETL).
+- AWS Glue Data Catalog = central metadata catalog for datasets, tables and schemas.
+- Glue Crawlers = discover data and automatically infer schemas.
+- Glue Job Bookmarks = track previously processed data to help avoid reprocessing it.
+- Glue DataBrew = clean and normalize data using visual, pre-built transformations.
+- Glue Studio = visual interface to create, run and monitor ETL jobs.
+- Glue Streaming ETL = continuously process streaming data.
+- Apache Parquet = columnar storage format that can reduce data scanned by analytical queries.
+- Exam tip: Use Glue to discover, catalog, transform and prepare data for analytics.
+
+AWS Lake Formation:
+- Managed service to build, secure and manage a centralized data lake, commonly on Amazon S3.
+- Helps discover, ingest, clean and transform data from multiple sources.
+- Data Catalog integration = organize and describe datasets in the data lake.
+- Fine-grained access control = manage permissions at database, table, column, row and cell levels where supported.
+- Blueprints = predefined workflows to simplify data ingestion.
+- Exam tip: Use Lake Formation to centrally manage data lake permissions and governance.
+
+Amazon Managed Service for Apache Flink:
+- Managed service to process and analyze streaming data in real time using Apache Flink.
+- Supports stateful stream processing, transformations, aggregations and time-based analysis.
+- Sources can include Amazon Kinesis Data Streams and Amazon MSK.
+- Amazon Data Firehose is not a direct Flink data source; use a supported source such as Kinesis Data Streams when integrating streaming data with Flink.
+- Exam tip: Use Managed Service for Apache Flink for custom real-time stream processing and analytics.
